@@ -1,4 +1,4 @@
-package com.redb.to_dolist.ui.send
+package com.redb.to_dolist.Vistas.NavigationDrawer.send
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

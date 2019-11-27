@@ -1,4 +1,4 @@
-package com.redb.to_dolist.ui.send
+package com.redb.to_dolist.Vistas.NavigationDrawer.tools
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.redb.to_dolist.R
 
-class SendFragment : Fragment() {
+class ToolsFragment : Fragment() {
 
-    private lateinit var sendViewModel: SendViewModel
+    private lateinit var toolsViewModel: ToolsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sendViewModel =
-            ViewModelProviders.of(this).get(SendViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_send, container, false)
-        val textView: TextView = root.findViewById(R.id.text_send)
-        sendViewModel.text.observe(this, Observer {
+        toolsViewModel =
+            ViewModelProviders.of(this).get(ToolsViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_tools, container, false)
+        val textView: TextView = root.findViewById(R.id.text_tools)
+        toolsViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root

@@ -1,4 +1,4 @@
-package com.redb.to_dolist.ui.share
+package com.redb.to_dolist.Vistas.NavigationDrawer.share
 
 import android.os.Bundle
 import android.view.LayoutInflater
