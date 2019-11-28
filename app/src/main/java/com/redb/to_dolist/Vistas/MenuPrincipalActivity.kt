@@ -15,7 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import com.redb.to_dolist.R
 
-class MainActivity : AppCompatActivity() {
+class MenuPrincipalActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
