@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1825104505",
+    "firebase_url": "https://to-dolist-bb848.firebaseio.com",
+    "project_id": "to-dolist-bb848",
+    "storage_bucket": "to-dolist-bb848.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1825104505:android:75004918f838cb628c2aa8",
+        "android_client_info": {
+          "package_name": "com.redb.to_dolist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1825104505-hvgtojs4ibq2ovrfptn8a4upjuq5itne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.redb.to_dolist",
+            "certificate_hash": "fd95662d99b05fb38cbbbd455d1ba18aa516949d"
+          }
+        },
+        {
+          "client_id": "1825104505-r1onsk4e8smdub9c2lvpa4fhpj3j6ptb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQepbK6YtftkfiiVFU-OkonFAa9OV_eZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1825104505-r1onsk4e8smdub9c2lvpa4fhpj3j6ptb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
