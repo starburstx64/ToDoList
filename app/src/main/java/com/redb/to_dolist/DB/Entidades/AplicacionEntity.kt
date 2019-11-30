@@ -13,5 +13,5 @@ import androidx.room.*
 data class AplicacionEntity (
     @PrimaryKey @ColumnInfo(name = "idAplicacion") val idAplicacion:Int,
     @ColumnInfo(name = "logedUser") val logedUser:String?,
-    @ColumnInfo(name = "lastView") val lastView:String
+    @ColumnInfo(name = "lastView") val lastView:String?
 )
