@@ -3,18 +3,21 @@ package com.redb.to_dolist.DB.Entidades
 import androidx.room.*
 
 
-@Entity(tableName = "Invitacion",
+@Entity(
+    tableName = "Invitacion",
     foreignKeys = arrayOf(
-        ForeignKey(entity = UsuarioEntity::class,
+        ForeignKey(
+            entity = UsuarioEntity::class,
             parentColumns = arrayOf("idUsuario"),
             childColumns = arrayOf("idUsuario"),
-            onDelete = ForeignKey.CASCADE)
+            onDelete = ForeignKey.CASCADE
+        )
     ),
     indices = [Index("idUsuario")]
-    )
+)
 data class InvitacionEntity(
-    @PrimaryKey @ColumnInfo(name = "idInvitacion") val idInvitacion:Int,
-    @ColumnInfo(name = "idUsuario") val idUsuario:String,
-    @ColumnInfo(name = "idLista") val idLista:String,
-    @ColumnInfo(name = "acepted",typeAffinity = ColumnInfo.INTEGER) val acepted:Boolean
+    @PrimaryKey @ColumnInfo(name = "idInvitacion") val idInvitacion: Int,
+    @ColumnInfo(name = "idUsuario") val idUsuario: String,
+    @ColumnInfo(name = "idLista") val idLista: String,
+    @ColumnInfo(name = "acepted", typeAffinity = ColumnInfo.INTEGER) val acepted: Boolean
 )
