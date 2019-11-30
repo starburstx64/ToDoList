@@ -1,0 +1,330 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "1a45a5d77920dc891ad47dac5d4144e9",
+    "entities": [
+      {
+        "tableName": "Aplicacion",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idAplicacion` INTEGER NOT NULL, `logedUser` TEXT, `lastView` TEXT, PRIMARY KEY(`idAplicacion`), FOREIGN KEY(`logedUser`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idAplicacion",
+            "columnName": "idAplicacion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "logedUser",
+            "columnName": "logedUser",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastView",
+            "columnName": "lastView",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idAplicacion"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Aplicacion_logedUser",
+            "unique": false,
+            "columnNames": [
+              "logedUser"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Aplicacion_logedUser` ON `${TABLE_NAME}` (`logedUser`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Usuario",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "logedUser"
+            ],
+            "referencedColumns": [
+              "idUsuario"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Invitacion",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idInvitacion` INTEGER NOT NULL, `idUsuario` TEXT NOT NULL, `idLista` TEXT NOT NULL, `acepted` INTEGER NOT NULL, PRIMARY KEY(`idInvitacion`), FOREIGN KEY(`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idInvitacion",
+            "columnName": "idInvitacion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idUsuario",
+            "columnName": "idUsuario",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idLista",
+            "columnName": "idLista",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "acepted",
+            "columnName": "acepted",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idInvitacion"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Invitacion_idUsuario",
+            "unique": false,
+            "columnNames": [
+              "idUsuario"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Invitacion_idUsuario` ON `${TABLE_NAME}` (`idUsuario`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Usuario",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idUsuario"
+            ],
+            "referencedColumns": [
+              "idUsuario"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Lista",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idLista` TEXT NOT NULL, `idUsuario` TEXT NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `shared` INTEGER NOT NULL, `listIcon` INTEGER NOT NULL, PRIMARY KEY(`idLista`), FOREIGN KEY(`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idLista",
+            "columnName": "idLista",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idUsuario",
+            "columnName": "idUsuario",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creator",
+            "columnName": "creator",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creatorName",
+            "columnName": "creatorName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "shared",
+            "columnName": "shared",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ListIcon",
+            "columnName": "listIcon",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idLista"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Lista_idUsuario",
+            "unique": false,
+            "columnNames": [
+              "idUsuario"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Lista_idUsuario` ON `${TABLE_NAME}` (`idUsuario`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Usuario",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idUsuario"
+            ],
+            "referencedColumns": [
+              "idUsuario"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Tarea",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTarea` INTEGER NOT NULL, `idLista` TEXT NOT NULL, `title` TEXT NOT NULL, `importance` INTEGER NOT NULL, `dueDate` TEXT NOT NULL, `completed` INTEGER NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `creatorIcon` INTEGER NOT NULL, PRIMARY KEY(`idTarea`), FOREIGN KEY(`idLista`) REFERENCES `Lista`(`idLista`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "idTarea",
+            "columnName": "idTarea",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idLista",
+            "columnName": "idLista",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "importance",
+            "columnName": "importance",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dueDate",
+            "columnName": "dueDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completed",
+            "columnName": "completed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creator",
+            "columnName": "creator",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creatorName",
+            "columnName": "creatorName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creatorIcon",
+            "columnName": "creatorIcon",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idTarea"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Tarea_idLista",
+            "unique": false,
+            "columnNames": [
+              "idLista"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Tarea_idLista` ON `${TABLE_NAME}` (`idLista`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Lista",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "idLista"
+            ],
+            "referencedColumns": [
+              "idLista"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Usuario",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idUsuario` TEXT NOT NULL, `username` TEXT NOT NULL, `password` TEXT NOT NULL, `selectedAvatar` INTEGER NOT NULL, `email` TEXT NOT NULL, PRIMARY KEY(`idUsuario`))",
+        "fields": [
+          {
+            "fieldPath": "idUsuario",
+            "columnName": "idUsuario",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "username",
+            "columnName": "username",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "password",
+            "columnName": "password",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "selectedAvatar",
+            "columnName": "selectedAvatar",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idUsuario"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1a45a5d77920dc891ad47dac5d4144e9')"
+    ]
+  }
+}

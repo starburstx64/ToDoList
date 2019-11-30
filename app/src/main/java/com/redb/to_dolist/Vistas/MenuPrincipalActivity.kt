@@ -13,9 +13,11 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import com.facebook.stetho.Stetho
+import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.R
 
-class MainActivity : AppCompatActivity() {
+class MenuPrincipalActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -24,6 +26,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        Stetho.initializeWithDefaults(this)
+        val db =AppDatabase.getAppDatabase(this)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -47,6 +52,10 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        db.getAplicacionDao().getAll()
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
