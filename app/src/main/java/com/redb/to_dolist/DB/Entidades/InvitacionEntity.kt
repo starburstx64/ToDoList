@@ -19,5 +19,6 @@ data class InvitacionEntity(
     @PrimaryKey @ColumnInfo(name = "idInvitacion") val idInvitacion: Int,
     @ColumnInfo(name = "idUsuario") val idUsuario: String,
     @ColumnInfo(name = "idLista") val idLista: String,
+    @ColumnInfo(name = "listTitle") val listTitle:String,
     @ColumnInfo(name = "acepted", typeAffinity = ColumnInfo.INTEGER) val acepted: Boolean
 )

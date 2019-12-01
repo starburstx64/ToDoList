@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1a45a5d77920dc891ad47dac5d4144e9",
+    "identityHash": "87d09c9d6b2f1349ac9eafb60c41fdd3",
     "entities": [
       {
         "tableName": "Aplicacion",
@@ -118,7 +118,7 @@
       },
       {
         "tableName": "Lista",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idLista` TEXT NOT NULL, `idUsuario` TEXT NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `shared` INTEGER NOT NULL, `listIcon` INTEGER NOT NULL, PRIMARY KEY(`idLista`), FOREIGN KEY(`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idLista` TEXT NOT NULL, `idUsuario` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `shared` INTEGER NOT NULL, `listIcon` INTEGER NOT NULL, PRIMARY KEY(`idLista`), FOREIGN KEY(`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "idLista",
@@ -129,6 +129,18 @@
           {
             "fieldPath": "idUsuario",
             "columnName": "idUsuario",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -324,7 +336,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1a45a5d77920dc891ad47dac5d4144e9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '87d09c9d6b2f1349ac9eafb60c41fdd3')"
     ]
   }
 }
