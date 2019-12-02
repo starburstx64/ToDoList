@@ -20,7 +20,7 @@ data class ListaEntity(
     @ColumnInfo(name = "title") var title:String,
     @ColumnInfo(name = "description") var description:String,
     @ColumnInfo(name = "creator") val creator: String,
-    @ColumnInfo(name = "creatorName") val creatorName: String,
+    @ColumnInfo(name = "creatorName") var creatorName: String,
     @ColumnInfo(name = "shared", typeAffinity = ColumnInfo.INTEGER) val shared: Boolean,
     @ColumnInfo(name = "listIcon") var ListIcon: Int,
     @ColumnInfo(name = "backgroudColor") var backgroundColor:String
