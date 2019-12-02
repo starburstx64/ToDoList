@@ -16,13 +16,13 @@ import java.util.*
     indices = [Index("idLista")]
 )
 data class TareaEntity(
-    @PrimaryKey @ColumnInfo(name = "idTarea") val idTarea: Int,
+    @PrimaryKey @ColumnInfo(name = "idTarea") val idTarea: String,
     @ColumnInfo(name = "idLista") val idLista: String,
-    @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "importance") val importance: Int,
-    @ColumnInfo(name = "dueDate") val dueDate: String,
-    @ColumnInfo(name = "completed", typeAffinity = ColumnInfo.INTEGER) val completed: Boolean,
+    @ColumnInfo(name = "title") var title: String,
+    @ColumnInfo(name = "importance") var importance: Int,
+    @ColumnInfo(name = "dueDate") var dueDate: Int,
+    @ColumnInfo(name = "completed", typeAffinity = ColumnInfo.INTEGER) var completed: Boolean,
     @ColumnInfo(name = "creator") val creator: String,
-    @ColumnInfo(name = "creatorName") val creatorName: String,
-    @ColumnInfo(name = "creatorIcon") val creatorIcon: Int
+    @ColumnInfo(name = "creatorName") var creatorName: String,
+    @ColumnInfo(name = "creatorIcon") var creatorIcon: Int
 )

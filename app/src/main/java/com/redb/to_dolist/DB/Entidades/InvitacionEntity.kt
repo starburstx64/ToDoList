@@ -16,8 +16,9 @@ import androidx.room.*
     indices = [Index("idUsuario")]
 )
 data class InvitacionEntity(
-    @PrimaryKey @ColumnInfo(name = "idInvitacion") val idInvitacion: Int,
+    @PrimaryKey @ColumnInfo(name = "idInvitacion") val idInvitacion: String,
     @ColumnInfo(name = "idUsuario") val idUsuario: String,
     @ColumnInfo(name = "idLista") val idLista: String,
+    @ColumnInfo(name = "listTitle") val listTitle:String,
     @ColumnInfo(name = "acepted", typeAffinity = ColumnInfo.INTEGER) val acepted: Boolean
 )
