@@ -20,9 +20,9 @@ data class TareaEntity(
     @ColumnInfo(name = "idLista") val idLista: String,
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "importance") var importance: Int,
-    @ColumnInfo(name = "dueDate") var dueDate: String,
+    @ColumnInfo(name = "dueDate") var dueDate: Int,
     @ColumnInfo(name = "completed", typeAffinity = ColumnInfo.INTEGER) var completed: Boolean,
     @ColumnInfo(name = "creator") val creator: String,
-    @ColumnInfo(name = "creatorName") val creatorName: String,
-    @ColumnInfo(name = "creatorIcon") val creatorIcon: Int
+    @ColumnInfo(name = "creatorName") var creatorName: String,
+    @ColumnInfo(name = "creatorIcon") var creatorIcon: Int
 )
