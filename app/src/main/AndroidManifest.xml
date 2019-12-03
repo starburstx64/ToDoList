@@ -9,24 +9,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Vistas.ActivityList"></activity>
-        <activity
-            android:name=".Lista_Activity"
-            android:label="@string/title_activity_lista_" />
-        <activity android:name=".Vistas.RegistrarActivity"></activity>
-        <activity android:name=".Vistas.MainActivity" />
-
-        <activity
-
-            android:name=".Vistas.MenuPrincipalActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".Vistas.ActivityList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Vistas.RegistrarActivity"></activity>
+        <activity
+
+            android:name=".Vistas.MenuPrincipalActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
+
+    <permission
+        android:name="com.app.appname.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.app.appname.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
 </manifest>
