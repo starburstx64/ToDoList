@@ -146,9 +146,11 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         val text = userNameEditText.text.toString().filterNot { c -> "@.".contains(c) }
 
                         if (text.isNotEmpty() && p0.child(text).exists()) {
-                            val userName =  p0.child(text).child("username").value.toString()
+                            val user = p0.child(text)
+                            val userName =  user.child("username").value.toString()
+                            val mail = user.child("email").value.toString()
 
-                            userList.add(Usuario("sada", userName, "asda", 1, text))
+                            userList.add(Usuario(text, userName, "asda", 1, mail))
                             userRecycler.adapter?.notifyDataSetChanged()
 
                             userNameEditText.text.clear()
@@ -185,11 +187,16 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             val userInvationsRef = database.getReference("App").child("userInvitations")
             userList.forEach {
-                listsRef.child("users").child(it.email).setValue(true)
+                listsRef.child("users").child(it.idUsuario).setValue(true)
 
-                val invitationRef = userInvationsRef.child(it.email).child("one")
+                val invitationRef = userInvationsRef.child(it.idUsuario).push()
                 invitationRef.child("idList").setValue(listsRef.key)
                 invitationRef.child("listTitle").setValue(listNameEditText.text.toString())
+
+                val listInvitationsRef = database.getReference("App").child("listInvitations").child(listsRef.key!!).push()
+                listInvitationsRef.child("idUser").setValue(it.idUsuario)
+                listInvitationsRef.child("userEmail").setValue(it.email)
+                listInvitationsRef.child("state").setValue(null)
             }
 
             Toast.makeText(view.context, "Lista Creada Correctamente", Toast.LENGTH_SHORT).show()
