@@ -7,6 +7,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.FirebaseDatabase
 import com.redb.to_dolist.R
 import kotlinx.android.synthetic.main.activity_list.*
 
@@ -52,6 +53,8 @@ class ActivityList : AppCompatActivity() {
         cancelButton = findViewById(R.id.list_button_cancelarLista)
 
         userRecycler = findViewById(R.id.list_recyclerView_showUser)
-        //endregion
+
+        FirebaseDatabase.getInstance().getReference("App").setValue("xdfcgvhbjnkml,")
+
     }
 }
