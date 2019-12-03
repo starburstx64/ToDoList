@@ -3,26 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_filtros"
+        android:checkableBehavior="single"
+        android:orderInCategory="0">
         <item
             android:id="@+id/nav_button_sync"
             android:icon="@drawable/ic_sync_black_24dp"
-            android:title="Sincronizar"/>
+            android:title="Sincronizar" />
         <item
             android:id="@+id/nav_button_all"
             android:icon="@drawable/ic_add_box_black_24dp"
-            android:title="Todos" />
+            android:title="Todos"
+            />
         <item
             android:id="@+id/nav_button_important"
             android:icon="@drawable/ic_feedback_black_24dp"
-            android:title="Importantes" />
+            android:title="Importantes"
+            tools:layout="@layout/fragment_home"/>
         <item
             android:id="@+id/nav_button_planing"
             android:icon="@drawable/ic_drafts_black_24dp"
-            android:title="Planeados" />
+            android:title="Planeados"
+            tools:layout="@layout/fragment_home"/>
     </group>
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_listas"
+        android:checkableBehavior="single"
+        android:orderInCategory="1">
+
+    </group>
+
+
+
+    <group
+        android:id="@+id/group_listasCompartidas"
+        android:checkableBehavior="single"
+        android:orderInCategory="2">
+
+    </group>
+
+
+    <group
+        android:id="@+id/group_actions"
+        android:checkableBehavior="single"
+        android:orderInCategory="3">
         <item
             android:id="@+id/nav_button_addList"
             android:icon="@drawable/ic_view_headline_black_24dp"
@@ -31,7 +57,7 @@
         <item
             android:id="@+id/nav_button_addSharedList"
             android:icon="@drawable/ic_view_headline_black_24dp"
-            android:title="+Añadir Lista Compartida"/>
+            android:title="+Añadir Lista Compartida" />
 
         <item
             android:id="@+id/nav_button_closeSession"

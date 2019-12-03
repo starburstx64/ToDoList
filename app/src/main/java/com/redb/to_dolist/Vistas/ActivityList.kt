@@ -88,6 +88,7 @@ class ActivityList : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         listNameEditText = findViewById(R.id.list_edtiText_nameList)
         userNameEditText = findViewById(R.id.list_edtiText_userName)
 
+
         backgroundColor = findViewById(R.id.spinner_color)
         icon = findViewById(R.id.spinner_icono)
 
