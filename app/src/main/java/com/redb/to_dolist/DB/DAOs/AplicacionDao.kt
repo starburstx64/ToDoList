@@ -9,4 +9,7 @@ interface AplicacionDao {
 
     @Query("SELECT * FROM Aplicacion")
     fun getAll():List<AplicacionEntity>
+
+    @Query("SELECT logedUser FROM Aplicacion WHERE idAplicacion = 0")
+    fun getLoggedUser() : String?
 }

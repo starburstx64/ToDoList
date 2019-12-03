@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "1825104505-i1hhnnn75cl7q1vp83q0cpbiqqd58v9q.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.redb.to_dolist",
-            "certificate_hash": "5208fa68743b7f8eaaec68c2a9556cafe0c8d8e8"
-          }
-        },
-        {
           "client_id": "1825104505-3te9svss8fjkhpmridr21ahqhc93durc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
