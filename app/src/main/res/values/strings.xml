@@ -47,4 +47,7 @@
     <string name="Registrar">¿No tiene cuenta? Registrar</string>
     <string name="btnRegistrar">Registrar</string>
     <string name="IniciarSesion">Iniciar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
