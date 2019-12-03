@@ -30,7 +30,7 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
-    <string name="agregar_lista">Agergar Lista</string>
+    <string name="agregar_lista">Agregar Lista</string>
     <string name="nombre_lista">Nombre de Lista</string>
     <string name="color_fondo">Color de Fondo</string>}
     <string name="icono_lista">Icono de lista</string>
@@ -67,4 +67,5 @@
     <string name="importancia">Importancia</string>
     <string name="fechaVencimiento">Fecha Vencimiento</string>
     <string name="shared">Shared</string>
+    <string name="descripci_n">Descripción</string>
 </resources>
