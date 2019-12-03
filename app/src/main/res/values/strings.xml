@@ -48,6 +48,19 @@
     <string name="btnRegistrar">Registrar</string>
     <string name="IniciarSesion">Iniciar</string>
 
+    <string name="addEdit_agregar">Agregar Tarea Nueva</string>
+    <string name="addEdit_editar">Edición de tarea</string>
+    <string name="addEdit_nombre">Nombre de la tarea</string>
+    <string name="addEdit_descripcion">Descripción de la tarea</string>
+    <string name="addEdit_importancia">Nivel de importancia</string>
+    <string name="addEdit_importancia_alta">Alta</string>
+    <string name="addEdit_importancia_normal">Normal</string>
+    <string name="addEdit_importancia_baja">Baja</string>
+    <string name="addEdit_importancia_noAsignada">Sin asignar</string>
+    <string name="addEdit_fecha">Fecha de vencimiento (OPCIONAL)</string>
+    <string name="addEdit_hintNombre">Ej: Ejemplo</string>
+    <string name="addEdit_agregarTarea">Agregar Tarea</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

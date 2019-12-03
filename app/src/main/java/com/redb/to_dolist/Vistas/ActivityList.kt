@@ -80,11 +80,10 @@ class ActivityList : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private var selectedColor = 0
 
     //endregion
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
-
+      
         //region InicializarControles
         listNameEditText = findViewById(R.id.list_edtiText_nameList)
         userNameEditText = findViewById(R.id.list_edtiText_userName)
