@@ -35,7 +35,7 @@
     <string name="color_fondo">Color de Fondo</string>}
     <string name="icono_lista">Icono de lista</string>
     <string name="lista_compartida">¿Lista compartida?</string>
-    <string name="user_name">Nombre User</string>
+    <string name="user_name">Invitaciones</string>
     <string name="add_user">Add</string>
     <string name="crear_listas">Crear</string>
     <string name="cancelar_listas">Cancelar</string>
@@ -48,6 +48,21 @@
     <string name="btnRegistrar">Registrar</string>
     <string name="IniciarSesion">Iniciar</string>
 
+    <string name="addEdit_agregar">Agregar Tarea Nueva</string>
+    <string name="addEdit_editar">Edición de tarea</string>
+    <string name="addEdit_nombre">Nombre de la tarea</string>
+    <string name="addEdit_descripcion">Descripción de la tarea</string>
+    <string name="addEdit_importancia">Nivel de importancia</string>
+    <string name="addEdit_importancia_alta">Alta</string>
+    <string name="addEdit_importancia_normal">Normal</string>
+    <string name="addEdit_importancia_baja">Baja</string>
+    <string name="addEdit_importancia_noAsignada">Sin asignar</string>
+    <string name="addEdit_fecha">Fecha de vencimiento (OPCIONAL)</string>
+    <string name="addEdit_hintNombre">Ej: Ejemplo</string>
+    <string name="addEdit_agregarTarea">Agregar Tarea</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Titulo">Titulo</string>
     <string name="importancia">Importancia</string>
     <string name="fechaVencimiento">Fecha Vencimiento</string>
