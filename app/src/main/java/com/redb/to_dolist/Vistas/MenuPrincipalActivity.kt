@@ -129,10 +129,12 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
         val menu = navView.menu
 
-        menu.add(0,Menu.NONE,1,"Listas").setIcon(R.drawable.ic_feedback_black_24dp).setOnMenuItemClickListener {
+        val item = menu.add(0,Menu.NONE,1,"Listas").setIcon(R.drawable.ic_feedback_black_24dp).setOnMenuItemClickListener {
             tvUserName.setText("hola")
             true
         }
+        //item.setActionView(R.layout.fragment_home)
+
         menu.add(0,Menu.NONE,1,"Listas2")
 
         navView.invalidate()

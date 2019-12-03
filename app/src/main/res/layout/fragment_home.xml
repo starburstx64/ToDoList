@@ -20,7 +20,6 @@
         android:id="@+id/task_textView_titulo"
         android:layout_width="44dp"
         android:layout_height="18dp"
-        android:text="@string/titulo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.128"
