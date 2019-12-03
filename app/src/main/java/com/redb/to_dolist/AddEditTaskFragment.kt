@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.google.firebase.database.FirebaseDatabase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,6 +68,15 @@ class AddEditTaskFragment : Fragment() {
         addEdit_Button_agregar = view.findViewById(R.id.addEdit_btn_agregar)
 
         val activeList = arguments?.getString("activeList")
+
+        addEdit_Button_agregar.setOnClickListener{
+
+            val databse  = FirebaseDatabase.getInstance()
+            val taskRef = databse.getReference("App").child("tasks").child(activeList!!).push()
+            taskRef.child("completed").setValue(false)
+
+
+        }
 
         return view
 

@@ -7,4 +7,5 @@ import androidx.room.Query
 interface TareaDao {
 
 
+
 }
