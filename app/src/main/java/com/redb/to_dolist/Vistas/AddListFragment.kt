@@ -47,7 +47,7 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                 view.findViewById<ImageView>(R.id.list_imageView_rvDeleteUserButton)
                     .setOnClickListener {
-                        fragment.deleteUserAtPostion(layoutPosition)
+                        fragment.deleteUserAtPosition(layoutPosition)
                     }
             }
         }
@@ -185,11 +185,11 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
             listsRef.child("title").setValue(listNameEditText.text.toString())
             listsRef.child("description").setValue("Prueba en 3, 2, 1...")
 
-            val userInvationsRef = database.getReference("App").child("userInvitations")
+            val userInvitationsRef = database.getReference("App").child("userInvitations")
             userList.forEach {
                 listsRef.child("users").child(it.idUsuario).setValue(true)
 
-                val invitationRef = userInvationsRef.child(it.idUsuario).push()
+                val invitationRef = userInvitationsRef.child(it.idUsuario).push()
                 invitationRef.child("idList").setValue(listsRef.key)
                 invitationRef.child("listTitle").setValue(listNameEditText.text.toString())
 
@@ -260,7 +260,7 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
     }
 
-    fun deleteUserAtPostion(position : Int) {
+    fun deleteUserAtPosition(position : Int) {
         userList.removeAt(position)
         userRecycler.adapter?.notifyDataSetChanged()
     }
