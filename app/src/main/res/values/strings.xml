@@ -47,4 +47,9 @@
     <string name="Registrar">¿No tiene cuenta? Registrar</string>
     <string name="btnRegistrar">Registrar</string>
     <string name="IniciarSesion">Iniciar</string>
+
+    <string name="Titulo">Titulo</string>
+    <string name="importancia">Importancia</string>
+    <string name="fechaVencimiento">Fecha Vencimiento</string>
+    <string name="shared">Shared</string>
 </resources>
