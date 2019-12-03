@@ -58,4 +58,5 @@ dependencies {
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.google.android.gms:play-services-ads:18.3.0'
+    implementation 'androidx.mediarouter:mediarouter:1.1.0'
 }
