@@ -1,5 +1,6 @@
 package com.redb.to_dolist.Vistas
 
+import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -7,6 +8,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.redb.to_dolist.DB.AppDatabase
+import com.redb.to_dolist.Modelos.Usuario
 
 import com.redb.to_dolist.R
 
@@ -23,11 +33,73 @@ private const val ARG_PARAM2 = "param2"
  * Use the [AddListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AddListFragment : Fragment() {
+class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
+
+    class Adapter(private val fragment : AddListFragment) : RecyclerView.Adapter<Adapter.AdapterViewHolder>() {
+
+        class AdapterViewHolder(private val view: View, private val fragment: AddListFragment) :
+            RecyclerView.ViewHolder(view) {
+            private var textViewUserName: TextView =
+                view.findViewById(R.id.list_textView_rvUserName)
+
+            fun bind(user: Usuario) {
+                textViewUserName.text = user.userName
+
+                view.findViewById<ImageView>(R.id.list_imageView_rvDeleteUserButton)
+                    .setOnClickListener {
+                        fragment.deleteUserAtPostion(layoutPosition)
+                    }
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(
+                R.layout.rv_list_user_list,
+                parent,
+                false
+            ) as View
+
+            return AdapterViewHolder(view, fragment)
+        }
+
+        override fun onBindViewHolder(holder: AdapterViewHolder, position: Int) {
+            holder.bind(fragment.userList[position])
+        }
+
+        override fun getItemCount(): Int {
+            return fragment.userList.size
+        }
+    }
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+
+    private lateinit var listNameEditText: EditText
+    private lateinit var userNameEditText: EditText
+
+    //Spinners
+    private lateinit var backgroundColor: Spinner
+    private lateinit var icon: Spinner
+
+    //CheckBox
+    private lateinit var checkShare: CheckBox
+
+    //Buttons
+    private lateinit var addButton: Button
+    private lateinit var createButton: Button
+    private lateinit var cancelButton: Button
+
+    //RecyclerView
+    private lateinit var userRecycler: RecyclerView
+
+    private var database = FirebaseDatabase.getInstance()
+
+    private var userList = arrayListOf<Usuario>()
+
+    private val colors = listOf("Red", "Blue", "Yellow", "Green")
+    private var selectedColor = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +114,88 @@ class AddListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_add_list, container, false)
+
+        listNameEditText = view.findViewById(R.id.list_edtiText_nameList)
+        userNameEditText = view.findViewById(R.id.list_edtiText_userName)
+
+        backgroundColor = view.findViewById(R.id.spinner_color)
+        icon = view.findViewById(R.id.spinner_icono)
+
+        checkShare = view.findViewById(R.id.list_checkBox_listaCompartida)
+
+        addButton = view.findViewById(R.id.list_button_addUser)
+        createButton = view.findViewById(R.id.list_button_crearLista)
+        cancelButton = view.findViewById(R.id.list_button_cancelarLista)
+
+        val spintAdapter = ArrayAdapter<String>(view.context, android.R.layout.simple_spinner_item, colors)
+        spintAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        backgroundColor.adapter = spintAdapter
+        backgroundColor.onItemSelectedListener = this
+
+        userRecycler = view.findViewById<RecyclerView>(R.id.list_recyclerView_showUser).apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(view.context)
+            adapter = Adapter(this@AddListFragment)
+        }
+
+        addButton.setOnClickListener {
+            database.getReference("App").child("users").addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val text = userNameEditText.text.toString().filterNot { c -> "@.".contains(c) }
+
+                        if (text.isNotEmpty() && p0.child(text).exists()) {
+                            val userName =  p0.child(text).child("username").value.toString()
+
+                            userList.add(Usuario("sada", userName, "asda", 1, text))
+                            userRecycler.adapter?.notifyDataSetChanged()
+
+                            userNameEditText.text.clear()
+                        }
+
+                        else {
+                            val dialog = AlertDialog.Builder(view.context)
+                            dialog.setMessage("No se encontro un usuario para el correo seleccionado")
+                            dialog.setTitle("Correo no encontrado")
+                            dialog.setPositiveButton("Ok") { _, _ ->
+
+                            }
+
+                            val alertDialog = dialog.create()
+                            alertDialog.show()
+                        }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+                })
+        }
+
+        createButton.setOnClickListener {
+            val loggedUser = AppDatabase.getAppDatabase(view.context).getAplicacionDao().getLoggedUser()
+
+            val listsRef = database.getReference("App").child("lists").push()
+            listsRef.child("creator").setValue(loggedUser.toString())
+            listsRef.child("shared").setValue(checkShare.isChecked)
+            listsRef.child("backgroundColor").setValue(colors[selectedColor])
+            listsRef.child("title").setValue(listNameEditText.text.toString())
+            listsRef.child("description").setValue("Prueba en 3, 2, 1...")
+
+            val userInvationsRef = database.getReference("App").child("userInvitations")
+            userList.forEach {
+                listsRef.child("users").child(it.email).setValue(true)
+
+                val invitationRef = userInvationsRef.child(it.email).child("one")
+                invitationRef.child("idList").setValue(listsRef.key)
+                invitationRef.child("listTitle").setValue(listNameEditText.text.toString())
+            }
+
+            Toast.makeText(view.context, "Lista Creada Correctamente", Toast.LENGTH_SHORT).show()
+        }
+
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -55,7 +208,7 @@ class AddListFragment : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            //throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
     }
 
@@ -98,5 +251,18 @@ class AddListFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    fun deleteUserAtPostion(position : Int) {
+        userList.removeAt(position)
+        userRecycler.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        selectedColor = p2
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+
     }
 }
