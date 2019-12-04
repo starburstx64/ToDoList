@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.redb.to_dolist.DB.AppDatabase
+import com.redb.to_dolist.DB.Entidades.ListaEntity
 import com.redb.to_dolist.Modelos.Usuario
 
 import com.redb.to_dolist.R
@@ -36,7 +37,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [AddListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class AddListFragment : Fragment() {
 
     class Adapter(private val fragment : AddListFragment) : RecyclerView.Adapter<Adapter.AdapterViewHolder>() {
 
@@ -195,12 +196,44 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val colorsList = listOf(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN)
         val colorSpinnerAdapter = ColorSpinnerAdapter(view.context, colorsList.toIntArray())
         backgroundColor.adapter = colorSpinnerAdapter
-        backgroundColor.onItemSelectedListener = this
+        backgroundColor.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                selectedColor = p2
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        }
 
         val iconList = listOf(R.drawable.trophy_gren, R.drawable.trophy_white, R.drawable.trophy_yellow)
         val iconSpinnerAdapter = IconSpinnerAdapter(view.context, iconList.toIntArray())
         icon.adapter = iconSpinnerAdapter
-        icon.onItemSelectedListener = this
+        icon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                selectedIcon = when (p2) {
+                    0 -> {
+                        R.drawable.trophy_gren
+                    }
+
+                    1 -> {
+                        R.drawable.trophy_white
+                    }
+
+                    2 -> {
+                        R.drawable.trophy_yellow
+                    }
+
+                    else -> {
+                        R.drawable.trophy_gren
+                    }
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        }
 
         userRecycler = view.findViewById<RecyclerView>(R.id.list_recyclerView_showUser).apply {
             setHasFixedSize(true)
@@ -262,7 +295,7 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 val loggedUser = AppDatabase.getAppDatabase(view.context).getAplicacionDao().getLoggedUser()
 
                 val listsRef = database.getReference("App").child("lists").push()
-                listsRef.child("creator").setValue(loggedUser.toString())
+                listsRef.child("creator").setValue(loggedUser!!)
                 listsRef.child("shared").setValue(checkShare.isChecked)
                 listsRef.child("backgroundColor").setValue(colors[selectedColor])
                 listsRef.child("title").setValue(listNameEditText.text.toString())
@@ -282,6 +315,15 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     listInvitationsRef.child("userEmail").setValue(it.email)
                     listInvitationsRef.child("state").setValue(null)
                 }
+
+                val roomDatabase = AppDatabase.getAppDatabase(view.context)
+
+                val user = roomDatabase.getUsuarioDao().getUsuarioByID(loggedUser)
+                val listToInsert = ListaEntity(listsRef.key!!, loggedUser,
+                    listNameEditText.text.toString(), descriptionEditText.text.toString(),
+                    loggedUser.toString(), user.username, checkShare.isChecked, selectedIcon, colors[selectedColor])
+
+                roomDatabase.getListaDao().insertList(listToInsert)
 
                 Toast.makeText(view.context, "Lista Creada Correctamente", Toast.LENGTH_SHORT).show()
             }
@@ -348,35 +390,5 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
     fun deleteUserAtPosition(position : Int) {
         userList.removeAt(position)
         userRecycler.adapter?.notifyDataSetChanged()
-    }
-
-    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        if (p1?.id == R.id.spinner_color_imageView) {
-            selectedColor = p2
-        }
-
-        else {
-            selectedIcon = when (p2) {
-                0 -> {
-                    R.drawable.trophy_gren
-                }
-
-                1 -> {
-                    R.drawable.trophy_white
-                }
-
-                2 -> {
-                    R.drawable.trophy_yellow
-                }
-
-                else -> {
-                    R.drawable.trophy_gren
-                }
-            }
-        }
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-
     }
 }
