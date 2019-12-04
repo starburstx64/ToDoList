@@ -5,7 +5,10 @@ data class Task (
     var importance:Int=0,
     var duedate:Int=20000101,
     var completed:Boolean=false,
-    var creator:String=""
+    var creator:String="",
+    var creatorName:String="",
+    var creatorIcon:Int=1,
+    var description:String=""
 )
 {
     var id:String?=null
