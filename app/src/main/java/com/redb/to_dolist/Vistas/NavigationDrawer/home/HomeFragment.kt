@@ -8,6 +8,9 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,7 +51,7 @@ class HomeFragment : Fragment() {
                 completedCheckBox.setOnCheckedChangeListener {_, isCheked ->
                     if (isCheked) {
                         fragment.removeTask(layoutPosition)
-                        Snackbar.make(view, "Tarea Completada", Snackbar.LENGTH_LONG).setAction("Deshacer,"
+                        Snackbar.make(view, "Tarea Completada", Snackbar.LENGTH_LONG).setAction("Deshacer"
                         ) {
                             fragment.restoreTask()
                         }.show()
@@ -88,6 +91,7 @@ class HomeFragment : Fragment() {
     private var deletedTaskPosition : Int? = null
 
     private lateinit var taskRecyclerView: RecyclerView
+    private lateinit var actionBar: ActionBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -102,6 +106,9 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(view.context)
             adapter = Adapter(this@HomeFragment)
         }
+
+        actionBar = (activity as AppCompatActivity).supportActionBar!!
+        actionBar.subtitle = "Hola Rasa"
 
         val roomDatabase = AppDatabase.getAppDatabase(view.context)
 
