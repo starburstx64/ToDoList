@@ -1,5 +1,6 @@
 package com.redb.to_dolist.Vistas.NavigationDrawer.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.redb.to_dolist.AddEditTaskActivity
 import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.DB.Entidades.TareaEntity
 import com.redb.to_dolist.R
@@ -49,7 +51,10 @@ class HomeFragment : Fragment() {
                 descriptionTextView.text = task.descrition
 
                 linearLayoutRoot.setOnClickListener {
-                    // Notificar al activity cambiar el fragmento
+                    val toEditTaskActivity = Intent(fragment.activity, AddEditTaskActivity::class.java)
+                    toEditTaskActivity.putExtra("forEdit", true)
+                    toEditTaskActivity.putExtra("idTask", task.idTarea)
+                    fragment.startActivity(toEditTaskActivity)
                 }
 
                 completedCheckBox.setOnCheckedChangeListener {_, isCheked ->
@@ -114,7 +119,8 @@ class HomeFragment : Fragment() {
 
         fab = view.findViewById(R.id.task_floatingActionButton_add)
         fab.setOnClickListener {
-            // Abrir el activity addTask
+            val toAddTaskActivity = Intent(view.context, AddEditTaskActivity::class.java)
+            startActivity(toAddTaskActivity)
         }
 
         return view

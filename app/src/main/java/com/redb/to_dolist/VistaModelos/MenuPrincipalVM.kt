@@ -13,7 +13,7 @@ class MenuPrincipalVM : ViewModel() {
     init {
         currentList.value = "12345"
 
-        taskList.value = mutableListOf(TareaEntity("asasd", "asdad",
+        taskList.value = mutableListOf(TareaEntity("1234", "asdad",
             "Terminar Proyecto", 3, 20191011, false, "asda",
             "David Ley", R.drawable.foto_01, "Padoru Padoru"), TareaEntity("sdsd", "gfd",
             "Mandar a chinga a su madre", 1, 2020111, false, "sddd",
