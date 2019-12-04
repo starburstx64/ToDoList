@@ -21,9 +21,10 @@ class RegistrarActivity : AppCompatActivity() {
     private lateinit var confirmarContraseña: EditText
     private lateinit var imagen: ImageView
     private lateinit var btnRegistrar: Button
+
+    private lateinit var btnprueba:Button
     private val model by lazy { ViewModelProviders.of(this)[RegistroVM::class.java] }
     private var index = 0
-
 
     var fotoIndex: Int = 0
     val fotos = arrayOf(
@@ -43,6 +44,7 @@ class RegistrarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrar)
+
         val db = AppDatabase.getAppDatabase(this)
         Stetho.initializeWithDefaults(this)
 
@@ -50,47 +52,12 @@ class RegistrarActivity : AppCompatActivity() {
         correoElectronico = findViewById(R.id.CorreoRegistro)
         contraseña = findViewById(R.id.ContraseñaRegistro)
         confirmarContraseña = findViewById(R.id.ConfirmarContraseñaRegistro)
-        imagen = findViewById(R.id.ImagenId)
+
         btnRegistrar = findViewById(R.id.btnRegistrar)
+        imagen = findViewById(R.id.ImagenId)
 
-        imagen.setOnClickListener {
-            seleccionarFoto()
-            imagen.setImageResource(obtenerFoto(fotoIndex))
-        }
-        btnRegistrar.setOnClickListener {
-            var usuarioRegistro = Usuario(
-                correoElectronico.text.toString(),
-                nombreUsuario.text.toString(),
-                contraseña.text.toString(),
-                fotoIndex,
-                correoElectronico.text.toString()
-            )
-            model.SetDatos(usuarioRegistro, confirmarContraseña.text.toString())
-            val database = FirebaseDatabase.getInstance()
-            val usersRef = database.getReference("App").child("users")
 
-            val loginReference = usersRef.orderByChild("email").equalTo(correoElectronico.text.toString())
-            loginReference.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                    if (!dataSnapshot.hasChildren() && !dataSnapshot.children.iterator().hasNext()     ) {
-                        model.RegistrarUsuario()
-                        Snackbar.make(it, "Registro Exitoso", Snackbar.LENGTH_LONG).show()
-
-                        val intent = Intent(this@RegistrarActivity, LoginActivity::class.java)
-                        startActivity(intent)
-                    } else Snackbar.make(
-                        it,
-                        "El Correo Proporcionado ya existe",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    throw databaseError.toException()
-                }
-            })
-        }
+        
 
 
         /*  usersRef.addChildEventListener(object : ChildEventListener {
