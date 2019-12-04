@@ -7,7 +7,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.redb.to_dolist.DB.AppDatabase
+import com.redb.to_dolist.Modelos.FBModels.User
 import com.redb.to_dolist.Modelos.Usuario
 import com.redb.to_dolist.R
 
@@ -17,6 +22,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var IniciarSesion: Button
     private lateinit var Registrar: Button
     private lateinit var UsuarioIniciarSesion: Usuario
+
+    private val database= FirebaseDatabase.getInstance()
+
 
 
 
@@ -36,20 +44,30 @@ class LoginActivity : AppCompatActivity() {
 
         IniciarSesion.setOnClickListener {
 
-            var TryUsuarioIniciarSesion = UsuarioIniciarSesion.TryIniciarSesion(
-                db, Correo.text.toString(),
-                Contrasña.text.toString()
-            )
-            when (TryUsuarioIniciarSesion) {
-                0 -> {
-                    Snackbar.make(it, "Inicio de sesion exitoso!!", Snackbar.LENGTH_LONG).show()
-                    val intent = Intent(this, ActivityList::class.java)
-                    startActivity(intent)
+            val loginReference = database.getReference("App").child("users").orderByChild("email").equalTo(Correo.text.toString())
+            loginReference.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
-                1 -> Snackbar.make(it, "Contraseña Incorrecta", Snackbar.LENGTH_SHORT).show()
 
-                2 -> Snackbar.make(it, "Correo Incorrecto", Snackbar.LENGTH_SHORT).show()
-            }
+                override fun onDataChange(p0: DataSnapshot) {
+                    val user:User? = p0.getValue(User::class.java)
+                    if(!p0.exists())
+                    {
+                        Snackbar.make(it, "Correo no registrado", Snackbar.LENGTH_SHORT).show()
+                    }
+                    else if(user!!.confirmed==false)
+                        Snackbar.make(it, "Usuario aun no aprobado", Snackbar.LENGTH_SHORT).show()
+                    else if(user.password != Contrasña.text.toString())
+                        Snackbar.make(it, "Contraseña incorrecta", Snackbar.LENGTH_SHORT).show()
+                    else { //Si si nos logeamos exitosamente
+                        val logedUserKey = p0.key
+                        val intent = Intent(this@LoginActivity, MenuPrincipalActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                }
+            })
 
 
         }

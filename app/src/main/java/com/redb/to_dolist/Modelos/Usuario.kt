@@ -35,19 +35,7 @@ data class Usuario(
 
     }
 
-    fun TryIniciarSesion(db: AppDatabase, email: String, password: String): Int {
-        val IniciarSesionUsuario = db.getUsuarioDao().getUsuario(email, password)
-        if (IniciarSesionUsuario?.email == email) {
-            if (IniciarSesionUsuario?.password == password) {
-                // 0 inicio de sesion exitoso
-                return 0
-            } else {
-                // ERROR: contraseña incorrecta
-                return 1
-            }
 
-        } else return 2 //Correo Incorrecto
-    }
 }
 
 
