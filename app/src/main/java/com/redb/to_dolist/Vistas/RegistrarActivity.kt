@@ -125,9 +125,9 @@ class RegistrarActivity : AppCompatActivity() {
         builder.setTitle("Elige una foto de perfil")
 
         val adaptadorDialogo =
-            ArrayAdapter<String>(this, android.R.layout.simple_selectable_list_item)
-        adaptadorDialogo.add("Mujer Zombi")
-        adaptadorDialogo.add("Buffon")
+            ArrayAdapter<ImageView>(this, android.R.layout.simple_selectable_list_item)
+        adaptadorDialogo.add(R.drawable.foto_01 as ImageView)
+        /*adaptadorDialogo.add("Buffon")
         adaptadorDialogo.add("Payaso")
         adaptadorDialogo.add("Persona Loca")
         adaptadorDialogo.add("Fantasma")
@@ -136,7 +136,7 @@ class RegistrarActivity : AppCompatActivity() {
         adaptadorDialogo.add("Reina")
         adaptadorDialogo.add("Esqueleto")
         adaptadorDialogo.add("Vikingo")
-        adaptadorDialogo.add("Hombre Zombi")
+        adaptadorDialogo.add("Hombre Zombi")*/
         builder.setAdapter(adaptadorDialogo) { dialog, which ->
             fotoIndex = which
 
