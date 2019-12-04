@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "81abef1d6a8b13aed08f60d677402fa9",
+    "identityHash": "b8d585e982d4569bbf73488d2a1d3fa4",
     "entities": [
       {
         "tableName": "Aplicacion",
@@ -213,7 +213,7 @@
       },
       {
         "tableName": "Tarea",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTarea` TEXT NOT NULL, `idLista` TEXT NOT NULL, `title` TEXT NOT NULL, `importance` INTEGER NOT NULL, `dueDate` INTEGER NOT NULL, `completed` INTEGER NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `creatorIcon` INTEGER NOT NULL, PRIMARY KEY(`idTarea`), FOREIGN KEY(`idLista`) REFERENCES `Lista`(`idLista`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTarea` TEXT NOT NULL, `idLista` TEXT NOT NULL, `title` TEXT NOT NULL, `importance` INTEGER NOT NULL, `dueDate` INTEGER NOT NULL, `completed` INTEGER NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `creatorIcon` INTEGER NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`idTarea`), FOREIGN KEY(`idLista`) REFERENCES `Lista`(`idLista`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "idTarea",
@@ -267,6 +267,12 @@
             "fieldPath": "creatorIcon",
             "columnName": "creatorIcon",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descrition",
+            "columnName": "description",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -348,7 +354,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '81abef1d6a8b13aed08f60d677402fa9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b8d585e982d4569bbf73488d2a1d3fa4')"
     ]
   }
 }
