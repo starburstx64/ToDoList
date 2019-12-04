@@ -123,6 +123,8 @@ class RegistrarActivity : AppCompatActivity() {
     fun seleccionarFoto() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Elige una foto de perfil")
+        var value:ImageView
+
 
         val adaptadorDialogo =
             ArrayAdapter<ImageView>(this, android.R.layout.simple_selectable_list_item)
