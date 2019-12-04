@@ -53,7 +53,8 @@ class MenuPrincipalActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home
+                R.id.nav_home,
+                R.id.nav_add_lists
             ), drawerLayout
         )
 
@@ -68,7 +69,8 @@ class MenuPrincipalActivity : AppCompatActivity() {
         val menu = navView.menu
 
         menu.findItem(R.id.nav_button_sync).setOnMenuItemClickListener {
-            tvUserName.setText("probando sincronizacion")
+            //tvUserName.setText("probando sincronizacion")
+
             true
         }
 
@@ -122,13 +124,25 @@ class MenuPrincipalActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+
     private fun addMenuItemInNavMenuDrawer() {
-        val navView = findViewById(R.id.nav_view) as NavigationView
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val navView : NavigationView = findViewById(R.id.nav_view)
+        val navController = findNavController(R.id.nav_host_fragment)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home,
+                R.id.nav_add_lists
+            ), drawerLayout
+        )
 
         val menu = navView.menu
 
         val item = menu.add(0,Menu.NONE,1,"Listas").setIcon(R.drawable.ic_feedback_black_24dp).setOnMenuItemClickListener {
             tvUserName.setText("hola")
+            navController.navigate(R.id.nav_home)
             true
         }
         //item.setActionView(R.layout.fragment_home)

@@ -50,7 +50,7 @@
         android:checkableBehavior="single"
         android:orderInCategory="3">
         <item
-            android:id="@+id/nav_button_addList"
+            android:id="@+id/nav_add_lists"
             android:icon="@drawable/ic_view_headline_black_24dp"
             android:title="+Añadir Lista" />
 
