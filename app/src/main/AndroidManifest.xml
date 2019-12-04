@@ -19,7 +19,6 @@
         <activity android:name=".AddEditTaskActivity" />
         <activity android:name=".Vistas.ActivityList" />
         <activity android:name=".Vistas.LoginActivity">
-
         </activity>
         <activity android:name=".Vistas.RegistrarActivity" />
         <activity

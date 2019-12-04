@@ -11,6 +11,9 @@ interface ListaDao {
     @Insert
     fun insertList(newList : ListaEntity) : Long
 
+    @Query("SELECT * FROM Lista WHERE idLista = :id")
+    fun getListByID(id : String) : ListaEntity
+  
     @Query("DELETE FROM Lista WHERE NOT (idLista IN (:idsExistentes))")
     fun DeleteUnexistenLists(idsExistentes:List<String>)
 
@@ -19,4 +22,5 @@ interface ListaDao {
 
     @Insert
     fun InsertarLista(lista:ListaEntity)
+
 }

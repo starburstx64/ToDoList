@@ -71,4 +71,12 @@
     <string name="fechaVencimiento">Fecha Vencimiento</string>
     <string name="shared">Shared</string>
     <string name="descripci_n">Descripción</string>
+    <string name="editar_lista">Editar Lista</string>
+    <string name="eliminar_lista">Eliminar Lista</string>
+    <string name="ordenar">Ordenar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="ordenar_por">Ordenar Por</string>
+    <string name="fecha">Fecha</string>
+    <string name="orden">Orden</string>
+    <string name="ascendente">Ascendente</string>
 </resources>
