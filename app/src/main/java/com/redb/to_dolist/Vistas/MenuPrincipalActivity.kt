@@ -111,8 +111,6 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
 
         addMenuItemInNavMenuDrawer()
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

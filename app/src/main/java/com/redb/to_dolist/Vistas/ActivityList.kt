@@ -12,12 +12,7 @@ import com.google.firebase.database.*
 import com.redb.to_dolist.Modelos.Usuario
 import com.redb.to_dolist.R
 import android.widget.Toast
-import android.content.DialogInterface
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.app.AlertDialog
-import androidx.room.RoomDatabase
 import com.redb.to_dolist.DB.AppDatabase
 
 
@@ -86,11 +81,11 @@ class ActivityList : AppCompatActivity(), AdapterView.OnItemSelectedListener {
       
         //region InicializarControles
         listNameEditText = findViewById(R.id.list_edtiText_nameList)
-        userNameEditText = findViewById(R.id.list_edtiText_userName)
+        userNameEditText = findViewById(R.id.list_editText_userName)
 
 
-        backgroundColor = findViewById(R.id.spinner_color)
-        icon = findViewById(R.id.spinner_icono)
+        backgroundColor = findViewById(R.id.list_spinner_color)
+        icon = findViewById(R.id.list_spinner_icono)
 
         checkShare = findViewById(R.id.list_checkBox_listaCompartida)
 

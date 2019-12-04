@@ -57,6 +57,7 @@ abstract class AppDatabase: RoomDatabase(){
             db.beginTransaction()
 
             db.execSQL("INSERT INTO Aplicacion(idAplicacion, logedUser) VALUES (0, 'raulhotmailcom')")
+            db.execSQL("INSERT INTO Usuario(idUsuario, username, password, selectedAvatar, email) VALUES ('raulhotmailcom', 'Raul', 'notiene', 1, 'raul@hotmail.com')")
 
             db.setTransactionSuccessful()
             db.endTransaction()
