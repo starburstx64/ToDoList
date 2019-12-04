@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b8d585e982d4569bbf73488d2a1d3fa4",
+    "identityHash": "bed9990beec250ad1f576892a635e764",
     "entities": [
       {
         "tableName": "Aplicacion",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idAplicacion` INTEGER NOT NULL, `logedUser` TEXT, `lastView` TEXT, PRIMARY KEY(`idAplicacion`), FOREIGN KEY(`logedUser`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idAplicacion` INTEGER NOT NULL, `logedUser` TEXT, `lastView` TEXT, PRIMARY KEY(`idAplicacion`), FOREIGN KEY(`logedUser`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "idAplicacion",
@@ -46,7 +46,7 @@
         "foreignKeys": [
           {
             "table": "Usuario",
-            "onDelete": "CASCADE",
+            "onDelete": "SET NULL",
             "onUpdate": "NO ACTION",
             "columns": [
               "logedUser"
@@ -354,7 +354,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b8d585e982d4569bbf73488d2a1d3fa4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bed9990beec250ad1f576892a635e764')"
     ]
   }
 }
