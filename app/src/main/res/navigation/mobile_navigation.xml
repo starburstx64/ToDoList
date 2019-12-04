@@ -8,7 +8,10 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.redb.to_dolist.Vistas.NavigationDrawer.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:label="@string/menu_home" />
+    <fragment
+        android:id="@+id/nav_add_lists"
+        android:name="com.redb.to_dolist.Vistas.AddListFragment"
+        android:label="Listas" />
     
 </navigation>
