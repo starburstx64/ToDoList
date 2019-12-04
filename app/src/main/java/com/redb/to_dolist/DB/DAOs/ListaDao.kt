@@ -13,4 +13,14 @@ interface ListaDao {
 
     @Query("SELECT * FROM Lista WHERE idLista = :id")
     fun getListByID(id : String) : ListaEntity
+  
+    @Query("DELETE FROM Lista WHERE NOT (idLista IN (:idsExistentes))")
+    fun DeleteUnexistenLists(idsExistentes:List<String>)
+
+    @Query("SELECT idLista FROM lista WHERE idLista IN (:idsFirebase)")
+    fun GetCurrentArchivedLists(idsFirebase:List<String>):List<String>
+
+    @Insert
+    fun InsertarLista(lista:ListaEntity)
+
 }

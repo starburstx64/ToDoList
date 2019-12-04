@@ -57,7 +57,7 @@ class RegistrarActivity : AppCompatActivity() {
         imagen = findViewById(R.id.ImagenId)
 
 
-        
+
 
 
         /*  usersRef.addChildEventListener(object : ChildEventListener {
