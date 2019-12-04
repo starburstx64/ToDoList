@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -20,6 +21,7 @@ import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.Modelos.Usuario
 
 import com.redb.to_dolist.R
+import com.redb.to_dolist.VistaModelos.MenuPrincipalVM
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -154,12 +156,16 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private var selectedColor = 0
     private var selectedIcon = 0
 
+    private lateinit var model : MenuPrincipalVM
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        model = ViewModelProviders.of(requireActivity()).get(MenuPrincipalVM::class.java)
     }
 
     override fun onCreateView(
@@ -350,7 +356,23 @@ class AddListFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         else {
-            selectedIcon = p2
+            selectedIcon = when (p2) {
+                0 -> {
+                    R.drawable.trophy_gren
+                }
+
+                1 -> {
+                    R.drawable.trophy_white
+                }
+
+                2 -> {
+                    R.drawable.trophy_yellow
+                }
+
+                else -> {
+                    R.drawable.trophy_gren
+                }
+            }
         }
     }
 
