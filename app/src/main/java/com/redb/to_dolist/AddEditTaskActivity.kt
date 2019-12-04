@@ -32,14 +32,21 @@ class AddEditTaskActivity : FragmentActivity() {
         addEdit_RadioButton_Bajo = findViewById(R.id.addEdit_radioButton_baja)
         //
 
-
         val forEdit = intent.getBooleanExtra("forEdit", false)
 
         if (forEdit) {
             val idTask = intent.getStringExtra("idTask")
             val currentTask = AppDatabase.getAppDatabase(this).getTareaDao().getTareaByID(idTask!!)
 
-            addEdit_TextView_Header.text = currentTask.title
+            addEdit_EditText_Nombre.setText(currentTask.title, TextView.BufferType.EDITABLE)
+            addEdit_EditText_Descripcion.setText(currentTask.descrition, TextView.BufferType.EDITABLE)
+
+            when (currentTask.importance) {
+                0 -> addEdit_RadioButton_SinAsignar.isChecked = true
+                1 -> addEdit_RadioButton_Bajo.isChecked = true
+                2 -> addEdit_RadioButton_Medio.isChecked = true
+                3 -> addEdit_RadioButton_Alto.isChecked = true
+            }
         }
     }
 }
