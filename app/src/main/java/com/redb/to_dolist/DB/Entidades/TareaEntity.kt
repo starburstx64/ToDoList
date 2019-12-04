@@ -24,5 +24,6 @@ data class TareaEntity(
     @ColumnInfo(name = "completed", typeAffinity = ColumnInfo.INTEGER) var completed: Boolean,
     @ColumnInfo(name = "creator") val creator: String,
     @ColumnInfo(name = "creatorName") var creatorName: String,
-    @ColumnInfo(name = "creatorIcon") var creatorIcon: Int
+    @ColumnInfo(name = "creatorIcon") var creatorIcon: Int,
+    @ColumnInfo(name = "description") var descrition: String
 )
