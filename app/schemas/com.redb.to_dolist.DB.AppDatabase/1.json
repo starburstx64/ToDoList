@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "87d09c9d6b2f1349ac9eafb60c41fdd3",
+    "identityHash": "81abef1d6a8b13aed08f60d677402fa9",
     "entities": [
       {
         "tableName": "Aplicacion",
@@ -59,12 +59,12 @@
       },
       {
         "tableName": "Invitacion",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idInvitacion` INTEGER NOT NULL, `idUsuario` TEXT NOT NULL, `idLista` TEXT NOT NULL, `acepted` INTEGER NOT NULL, PRIMARY KEY(`idInvitacion`), FOREIGN KEY(`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idInvitacion` TEXT NOT NULL, `idUsuario` TEXT NOT NULL, `idLista` TEXT NOT NULL, `listTitle` TEXT NOT NULL, `acepted` INTEGER NOT NULL, PRIMARY KEY(`idInvitacion`), FOREIGN KEY(`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "idInvitacion",
             "columnName": "idInvitacion",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -76,6 +76,12 @@
           {
             "fieldPath": "idLista",
             "columnName": "idLista",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "listTitle",
+            "columnName": "listTitle",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -118,7 +124,7 @@
       },
       {
         "tableName": "Lista",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idLista` TEXT NOT NULL, `idUsuario` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `shared` INTEGER NOT NULL, `listIcon` INTEGER NOT NULL, PRIMARY KEY(`idLista`), FOREIGN KEY(`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idLista` TEXT NOT NULL, `idUsuario` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `shared` INTEGER NOT NULL, `listIcon` INTEGER NOT NULL, `backgroudColor` TEXT NOT NULL, PRIMARY KEY(`idLista`), FOREIGN KEY(`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "idLista",
@@ -167,6 +173,12 @@
             "columnName": "listIcon",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "backgroundColor",
+            "columnName": "backgroudColor",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -201,12 +213,12 @@
       },
       {
         "tableName": "Tarea",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTarea` INTEGER NOT NULL, `idLista` TEXT NOT NULL, `title` TEXT NOT NULL, `importance` INTEGER NOT NULL, `dueDate` TEXT NOT NULL, `completed` INTEGER NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `creatorIcon` INTEGER NOT NULL, PRIMARY KEY(`idTarea`), FOREIGN KEY(`idLista`) REFERENCES `Lista`(`idLista`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTarea` TEXT NOT NULL, `idLista` TEXT NOT NULL, `title` TEXT NOT NULL, `importance` INTEGER NOT NULL, `dueDate` INTEGER NOT NULL, `completed` INTEGER NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `creatorIcon` INTEGER NOT NULL, PRIMARY KEY(`idTarea`), FOREIGN KEY(`idLista`) REFERENCES `Lista`(`idLista`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "idTarea",
             "columnName": "idTarea",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -230,7 +242,7 @@
           {
             "fieldPath": "dueDate",
             "columnName": "dueDate",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -336,7 +348,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '87d09c9d6b2f1349ac9eafb60c41fdd3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '81abef1d6a8b13aed08f60d677402fa9')"
     ]
   }
 }

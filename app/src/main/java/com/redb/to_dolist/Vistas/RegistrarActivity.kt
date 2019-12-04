@@ -1,13 +1,18 @@
 package com.redb.to_dolist.Vistas
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProviders
+import com.facebook.stetho.Stetho
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.*
 import com.redb.to_dolist.R
+import com.redb.to_dolist.DB.AppDatabase
+import com.redb.to_dolist.Modelos.Usuario
+import com.redb.to_dolist.VistaModelos.RegistroVM
 
 class RegistrarActivity : AppCompatActivity() {
     private lateinit var nombreUsuario: EditText
@@ -16,6 +21,9 @@ class RegistrarActivity : AppCompatActivity() {
     private lateinit var confirmarContraseña: EditText
     private lateinit var imagen: ImageView
     private lateinit var btnRegistrar: Button
+    private val model by lazy { ViewModelProviders.of(this)[RegistroVM::class.java] }
+    private var index = 0
+
 
     var fotoIndex: Int = 0
     val fotos = arrayOf(
@@ -35,6 +43,8 @@ class RegistrarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrar)
+        val db = AppDatabase.getAppDatabase(this)
+        Stetho.initializeWithDefaults(this)
 
         nombreUsuario = findViewById(R.id.NombreUsuario)
         correoElectronico = findViewById(R.id.CorreoRegistro)
@@ -47,6 +57,67 @@ class RegistrarActivity : AppCompatActivity() {
             seleccionarFoto()
             imagen.setImageResource(obtenerFoto(fotoIndex))
         }
+        btnRegistrar.setOnClickListener {
+            var usuarioRegistro = Usuario(
+                correoElectronico.text.toString(),
+                nombreUsuario.text.toString(),
+                contraseña.text.toString(),
+                fotoIndex,
+                correoElectronico.text.toString()
+            )
+            model.SetDatos(usuarioRegistro, confirmarContraseña.text.toString())
+            val database = FirebaseDatabase.getInstance()
+            val usersRef = database.getReference("App").child("users")
+
+            val loginReference = usersRef.orderByChild("email").equalTo(correoElectronico.text.toString())
+            loginReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    if (!dataSnapshot.hasChildren() && !dataSnapshot.children.iterator().hasNext()     ) {
+                        model.RegistrarUsuario()
+                        Snackbar.make(it, "Registro Exitoso", Snackbar.LENGTH_LONG).show()
+
+                        val intent = Intent(this@RegistrarActivity, LoginActivity::class.java)
+                        startActivity(intent)
+                    } else Snackbar.make(
+                        it,
+                        "El Correo Proporcionado ya existe",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    throw databaseError.toException()
+                }
+            })
+        }
+
+
+        /*  usersRef.addChildEventListener(object : ChildEventListener {
+              override fun onCancelled(p0: DatabaseError) {
+
+              }
+
+              override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+
+              }
+
+              override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+
+              }
+
+              override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                  val user: Usuario? = p0.getValue(Usuario::class.java)
+                  user?.userName = p0.key!!
+              }
+
+              override fun onChildRemoved(p0: DataSnapshot) {
+
+              }
+
+
+          })*/
+
     }
 
     fun seleccionarFoto() {
@@ -82,5 +153,12 @@ class RegistrarActivity : AppCompatActivity() {
 
     fun obtenerFoto(indice: Int): Int {
         return fotos.get(indice)
+    }
+
+
+    fun obtnerIndice(num: Int) {
+        val indice = num
+        index = indice
+
     }
 }
