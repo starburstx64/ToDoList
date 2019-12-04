@@ -57,7 +57,8 @@
     <string name="addEdit_importancia_normal">Normal</string>
     <string name="addEdit_importancia_baja">Baja</string>
     <string name="addEdit_importancia_noAsignada">Sin asignar</string>
-    <string name="addEdit_fecha">Fecha de vencimiento (OPCIONAL)</string>
+    <string name="addEdit_fecha">Agregar fecha de vencimiento</string>
+    <string name="addEdit_fecha2">Fecha</string>
     <string name="addEdit_hintNombre">Ej: Ejemplo</string>
     <string name="addEdit_agregarTarea">Agregar Tarea</string>
 

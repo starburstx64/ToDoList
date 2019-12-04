@@ -18,4 +18,11 @@ class testActitvity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.testActivity, fragment)
 
     }
+
+    fun getCurrentList():String
+    {
+        return "fjdasfj"
+    }
+
 }
+
