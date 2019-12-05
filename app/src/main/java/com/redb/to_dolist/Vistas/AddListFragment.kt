@@ -13,10 +13,7 @@ import android.widget.*
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.DB.Entidades.ListaEntity
 import com.redb.to_dolist.Modelos.Usuario
@@ -156,6 +153,7 @@ class AddListFragment : Fragment() {
     private val colors = listOf("Red", "Blue", "Yellow", "Green")
     private var selectedColor = 0
     private var selectedIcon = 0
+    private lateinit var db:AppDatabase
 
     private lateinit var model : MenuPrincipalVM
 
@@ -175,6 +173,7 @@ class AddListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add_list, container, false)
+        db = AppDatabase.getAppDatabase(activity as Context)
 
         listNameEditText = view.findViewById(R.id.list_edtiText_nameList)
         descriptionEditText = view.findViewById(R.id.list_inputText_description)
@@ -213,19 +212,19 @@ class AddListFragment : Fragment() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 selectedIcon = when (p2) {
                     0 -> {
-                        R.drawable.trophy_gren
+                        1
                     }
 
                     1 -> {
-                        R.drawable.trophy_white
+                        2
                     }
 
                     2 -> {
-                        R.drawable.trophy_yellow
+                        3
                     }
 
                     else -> {
-                        R.drawable.trophy_gren
+                        1
                     }
                 }
             }
@@ -294,13 +293,25 @@ class AddListFragment : Fragment() {
             else {
                 val loggedUser = AppDatabase.getAppDatabase(view.context).getAplicacionDao().getLoggedUser()
 
-                val listsRef = database.getReference("App").child("lists").push()
+                var listKey:String =""
+                //val listsRef = database.getReference("App").child("lists").child(listKey.toString())
+                val listsRef : DatabaseReference = if ((activity as? ActivityList) != null) {
+                    listKey = db.getAplicacionDao().getAplicationList()
+                    database.getReference("App").child("lists").child(listKey)
+                } else {
+                    listKey = database.getReference("App").child("lists").push().key.toString()
+                    database.getReference("App").child("lists").child(listKey)
+                }
+
                 listsRef.child("creator").setValue(loggedUser!!)
                 listsRef.child("shared").setValue(checkShare.isChecked)
                 listsRef.child("backgroundColor").setValue(colors[selectedColor])
                 listsRef.child("title").setValue(listNameEditText.text.toString())
                 listsRef.child("description").setValue(descriptionEditText.text.toString())
                 listsRef.child("listIcon").setValue(selectedIcon)
+                listsRef.child("users").child(loggedUser).setValue(true)
+
+                database.getReference("App").child("users").child(loggedUser).child("lists").child(listKey.toString()).setValue(true)
 
                 val userInvitationsRef = database.getReference("App").child("userInvitations")
                 userList.forEach {
@@ -316,17 +327,21 @@ class AddListFragment : Fragment() {
                     listInvitationsRef.child("state").setValue(null)
                 }
 
-                val roomDatabase = AppDatabase.getAppDatabase(view.context)
+                /*val roomDatabase = AppDatabase.getAppDatabase(view.context)
 
                 val user = roomDatabase.getUsuarioDao().getUsuarioByID(loggedUser)
                 val listToInsert = ListaEntity(listsRef.key!!, loggedUser,
                     listNameEditText.text.toString(), descriptionEditText.text.toString(),
                     loggedUser.toString(), user.username, checkShare.isChecked, selectedIcon, colors[selectedColor])
 
-                roomDatabase.getListaDao().insertList(listToInsert)
+                roomDatabase.getListaDao().insertList(listToInsert)*/
 
                 Toast.makeText(view.context, "Lista Creada Correctamente", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        cancelButton.setOnClickListener {
+            activity?.onBackPressed()
         }
 
         return view

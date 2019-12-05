@@ -1,5 +1,6 @@
 package com.redb.to_dolist.Vistas.NavigationDrawer.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +12,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import com.redb.to_dolist.AddEditTaskActivity
 import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.DB.Entidades.TareaEntity
@@ -27,6 +29,8 @@ import com.redb.to_dolist.R
 import com.redb.to_dolist.VistaModelos.MenuPrincipalVM
 
 class HomeFragment : Fragment() {
+
+    private val database:FirebaseDatabase = FirebaseDatabase.getInstance()
 
     class Adapter(private val fragment: HomeFragment) : RecyclerView.Adapter<Adapter.AdapterViewHolder>() {
 
@@ -42,7 +46,7 @@ class HomeFragment : Fragment() {
             private var descriptionTextView = view.findViewById<TextView>(R.id.task_textView_description)
 
             fun bind(task : TareaEntity) {
-                personPhoto.setImageResource(task.creatorIcon)
+                //personPhoto.setImageResource(task.creatorIcon)
                 tituloTextView.text = task.title
                 importanceTextView.text = view.resources.getString(R.string.task_importance, task.importance)
                 dueDateTextView.text = view.resources.getString(R.string.task_dueDate, task.dueDate)
@@ -60,8 +64,14 @@ class HomeFragment : Fragment() {
                 completedCheckBox.setOnCheckedChangeListener {_, isCheked ->
                     if (isCheked) {
                         fragment.removeTask(layoutPosition)
+                        val db= AppDatabase.getAppDatabase(fragment.activity as Context)
+                        db.getTareaDao().completarTarea(task.idTarea)
+                        fragment.database.getReference("App").child("tasks").child(task.idLista).child(task.idTarea).child("completed").setValue(true)
+
                         Snackbar.make(view, "Tarea Completada", Snackbar.LENGTH_LONG).setAction("Deshacer"
                         ) {
+                            db.getTareaDao().descompletarTarea(task.idTarea)
+                            fragment.database.getReference("App").child("tasks").child(task.idLista).child(task.idTarea).child("completed").setValue(false)
                             fragment.restoreTask()
                         }.show()
                     }
@@ -118,6 +128,13 @@ class HomeFragment : Fragment() {
         actionBar.subtitle = "Hola Rasa"
 
         fab = view.findViewById(R.id.task_floatingActionButton_add)
+        val db = AppDatabase.getAppDatabase(view.context)
+        val listaActual = db.getAplicacionDao().getAplicationList()
+        when(listaActual)
+        {
+            "Todas","Planeadas","Importantes"->fab.isVisible=false
+            else->fab.isVisible=true
+        }
         fab.setOnClickListener {
             val toAddTaskActivity = Intent(view.context, AddEditTaskActivity::class.java)
             startActivity(toAddTaskActivity)
@@ -138,7 +155,7 @@ class HomeFragment : Fragment() {
         })
 
         val roomDatabase = AppDatabase.getAppDatabase(view.context)
-        val currentList = roomDatabase.getListaDao().getListByID(model.getCurrentListID())
+        val currentList = roomDatabase.getListaDao().getListByID(roomDatabase.getAplicacionDao().getAplicationList())
         taskRoot = view.findViewById(R.id.task_coordinator_root)
 
         if(currentList!=null) {

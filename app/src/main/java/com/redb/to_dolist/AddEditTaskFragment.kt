@@ -1,5 +1,6 @@
 package com.redb.to_dolist
 
+import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -8,12 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.isGone
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.database.FirebaseDatabase
 import com.redb.to_dolist.DB.AppDatabase
-import java.util.*
-import android.view.ViewParent
-import android.view.MotionEvent
+import com.google.firebase.database.DatabaseReference
+import com.redb.to_dolist.VistaModelos.MenuPrincipalVM
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -49,6 +50,8 @@ class AddEditTaskFragment : Fragment() {
     private var prioridad = 0
     private var agregar_fecha = false
 
+    private lateinit var db:AppDatabase
+
 
     // fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
     //     if (ev.actionMasked == MotionEvent.ACTION_DOWN) {
@@ -68,6 +71,8 @@ class AddEditTaskFragment : Fragment() {
         }
     }
 
+    private lateinit var model: MenuPrincipalVM
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,6 +81,7 @@ class AddEditTaskFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_edit_task, container, false)
 
 
+        db= AppDatabase.getAppDatabase(activity as Context)
         addEdit_TextView_Header = view.findViewById(R.id.addEdit_textView_header)
         addEdit_EditText_Descripcion = view.findViewById(R.id.addEdit_editText_descripcion)
         addEdit_EditText_Nombre = view.findViewById(R.id.addEdit_editText_nombre)
@@ -92,6 +98,9 @@ class AddEditTaskFragment : Fragment() {
         addEdit_DatePicker_fecha = view.findViewById(R.id.addEdit_datePicker_fecha)
         addEdit_Button_agregar = view.findViewById(R.id.addEdit_btn_agregar)
         //
+
+        model = ViewModelProviders.of(activity!!).get(MenuPrincipalVM::class.java)
+        //db=model.databaseRoom
 
         addEdit_RadioButton_SinAsignar.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -128,7 +137,7 @@ class AddEditTaskFragment : Fragment() {
         }
 
 
-        val activeList = (activity as testActitvity).getCurrentList()
+        val activeList = (activity as AddEditTaskActivity).getCurrentList()
 
         addEdit_Button_agregar.setOnClickListener {
 
@@ -154,14 +163,9 @@ class AddEditTaskFragment : Fragment() {
                 dia = "0" + dia
             }
 
-
             // calendar.set(year, month, day)
-            val date = year.toString() + mes + dia
+            val date = (year.toString() + mes + dia).toInt()
             val database = FirebaseDatabase.getInstance()
-
-
-
-
 
             if (addEdit_EditText_Nombre.text.isBlank()) {
 
@@ -174,12 +178,27 @@ class AddEditTaskFragment : Fragment() {
                 ).show()
 
             } else {
-                val taskRef = database.getReference("App").child("tasks").child(activeList).push()
+                //val taskRef : DatabaseReference
+                val listid=db.getAplicacionDao().getAplicationList()
+
+                /*if ((activity as AddEditTaskActivity).forEdit()) {
+                    taskRef = database.getReference("App").child("tasks").child(listid).child((activity as AddEditTaskActivity).getCurrentTaskID())
+                }
+
+                else {
+
+                    taskRef = database.getReference("App").child("tasks").child(listid).push()*/
+
+                val taskRef : DatabaseReference = if ((activity as? AddEditTaskActivity) != null) {
+                    database.getReference("App").child("tasks").child(listid).push()
+                } else {
+                    database.getReference("App").child("tasks").child(listid).child((activity as AddEditTaskActivity).getCurrentTaskID())
+                }
 
                 if (!addEdit_CheckBox_AceptarFecha.isChecked) {
-                    taskRef.child("duedate").setValue("00000000")
+                    taskRef.child("duedate").setValue(null)
                 } else {
-                    taskRef.child("duedate").setValue(date.toString())
+                    taskRef.child("duedate").setValue(date)
 
                 }
 
@@ -199,13 +218,7 @@ class AddEditTaskFragment : Fragment() {
                 Toast.makeText(view.context, "La tarea ha sido agregada con exito", Toast.LENGTH_SHORT)
                     .show()
             }
-
-
-
-
-
         }
-
 
         return view
 

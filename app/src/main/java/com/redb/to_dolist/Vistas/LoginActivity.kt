@@ -31,6 +31,13 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         val db = AppDatabase.getAppDatabase(this)
+
+        var logedUser = db.getAplicacionDao().getLoggedUser()
+        if(logedUser!=null)
+        {
+            val intent = Intent(this@LoginActivity, MenuPrincipalActivity::class.java)
+            startActivity(intent)
+        }
         Correo = findViewById(R.id.IniciarSesion)
         Contrasña = findViewById(R.id.Contraseña)
         IniciarSesion = findViewById(R.id.btnIniciar)
@@ -43,8 +50,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         IniciarSesion.setOnClickListener {
-
             if (Correo.text.isEmpty() || Contrasña.text.isEmpty()) {
+
 
                 Snackbar.make(it, "Llene todos los campos", Snackbar.LENGTH_LONG).show()
 
@@ -112,7 +119,10 @@ class LoginActivity : AppCompatActivity() {
                             }
                         }
 
-
+                        Usuario.LogearUsuario(UserIniciarSesion, db)
+                        db.getAplicacionDao().setearLista("Todas")
+                        val intent = Intent(this@LoginActivity, MenuPrincipalActivity::class.java)
+                        startActivity(intent)
                     }
                 })
             }
@@ -125,4 +135,8 @@ class LoginActivity : AppCompatActivity() {
         finishAffinity()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
 }

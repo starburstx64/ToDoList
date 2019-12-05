@@ -6,6 +6,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.redb.to_dolist.Modelos.FBModels.ListFB
 import com.redb.to_dolist.Modelos.FBModels.User
 import com.redb.to_dolist.Modelos.Usuario
 
@@ -48,7 +49,23 @@ class RegistroVM : ViewModel() {
             indexImage,
             false
         )
-        usersRef.push().setValue(user)
+        val userKey=usersRef.push().key
+        usersRef.child(userKey.toString()).setValue(user)
+
+        val listaInsertar = ListFB("Pendientes",
+            "Lista creada por default",
+            userKey.toString(),
+            false,
+            "Red",
+            1)
+
+        val listRef = database.getReference("App").child("lists")
+        val listKey = listRef.push().key
+        listRef.child(listKey.toString()).setValue(listaInsertar)
+        listRef.child(listKey.toString()).child("users").child(userKey.toString()).setValue(true)
+
+        usersRef.child(userKey.toString()).child("lists").child(listKey.toString()).setValue(true)
+
     }
 
 }

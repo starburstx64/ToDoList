@@ -59,6 +59,9 @@ abstract class AppDatabase: RoomDatabase(){
             db.execSQL("INSERT INTO Aplicacion(idAplicacion, logedUser) VALUES (0, 'raulhotmailcom')")
             db.execSQL("INSERT INTO Usuario(idUsuario, username, password, selectedAvatar, email) VALUES ('raulhotmailcom', 'Raul', 'notiene', 1, 'raul@hotmail.com')")
 
+            //db.execSQL("INSERT INTO Lista(idLista, idUsuario, title, description, creator, creatorName, shared, listIcon, backgroudColor) VALUES ('12345', 'raulhotmailcom', 'Terminar Proyecto', 'notiene', 'raul', 'raul', 1, '1', 'Red')")
+            //db.execSQL("INSERT INTO Invitacion(idInvitacion, idUsuario, idLista, listTitle, acepted) VALUES ('1234', 'raulhotmailcom', '12345', 'Nose', 0)")
+
             db.setTransactionSuccessful()
             db.endTransaction()
         }
