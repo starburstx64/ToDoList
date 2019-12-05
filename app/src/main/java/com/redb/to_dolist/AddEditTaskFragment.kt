@@ -1,5 +1,6 @@
 package com.redb.to_dolist
 
+import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -9,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.database.FirebaseDatabase
 import com.redb.to_dolist.DB.AppDatabase
 import com.google.firebase.database.DatabaseReference
+import com.redb.to_dolist.VistaModelos.MenuPrincipalVM
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,6 +50,8 @@ class AddEditTaskFragment : Fragment() {
     private var prioridad = 0
     private var agregar_fecha = false
 
+    private lateinit var db:AppDatabase
+
 
     // fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
     //     if (ev.actionMasked == MotionEvent.ACTION_DOWN) {
@@ -66,6 +71,8 @@ class AddEditTaskFragment : Fragment() {
         }
     }
 
+    private lateinit var model: MenuPrincipalVM
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,6 +81,7 @@ class AddEditTaskFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_edit_task, container, false)
 
 
+        db= AppDatabase.getAppDatabase(activity as Context)
         addEdit_TextView_Header = view.findViewById(R.id.addEdit_textView_header)
         addEdit_EditText_Descripcion = view.findViewById(R.id.addEdit_editText_descripcion)
         addEdit_EditText_Nombre = view.findViewById(R.id.addEdit_editText_nombre)
@@ -90,6 +98,9 @@ class AddEditTaskFragment : Fragment() {
         addEdit_DatePicker_fecha = view.findViewById(R.id.addEdit_datePicker_fecha)
         addEdit_Button_agregar = view.findViewById(R.id.addEdit_btn_agregar)
         //
+
+        model = ViewModelProviders.of(activity!!).get(MenuPrincipalVM::class.java)
+        //db=model.databaseRoom
 
         addEdit_RadioButton_SinAsignar.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -168,13 +179,15 @@ class AddEditTaskFragment : Fragment() {
 
             } else {
                 val taskRef : DatabaseReference
+                val listid=db.getAplicacionDao().getAplicationList()
 
                 if ((activity as AddEditTaskActivity).forEdit()) {
-                    taskRef = database.getReference("App").child("tasks").child(activeList).child((activity as AddEditTaskActivity).getCurrentTaskID())
+                    taskRef = database.getReference("App").child("tasks").child(listid).child((activity as AddEditTaskActivity).getCurrentTaskID())
                 }
 
                 else {
-                    taskRef = database.getReference("App").child("tasks").child(activeList).push()
+
+                    taskRef = database.getReference("App").child("tasks").child(listid).push()
                 }
 
                 if (!addEdit_CheckBox_AceptarFecha.isChecked) {

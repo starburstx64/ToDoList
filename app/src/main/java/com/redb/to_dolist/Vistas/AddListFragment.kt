@@ -294,13 +294,17 @@ class AddListFragment : Fragment() {
             else {
                 val loggedUser = AppDatabase.getAppDatabase(view.context).getAplicacionDao().getLoggedUser()
 
-                val listsRef = database.getReference("App").child("lists").push()
+                val listKey = database.getReference("App").child("lists").push().key
+                val listsRef = database.getReference("App").child("lists").child(listKey.toString())
                 listsRef.child("creator").setValue(loggedUser!!)
                 listsRef.child("shared").setValue(checkShare.isChecked)
                 listsRef.child("backgroundColor").setValue(colors[selectedColor])
                 listsRef.child("title").setValue(listNameEditText.text.toString())
                 listsRef.child("description").setValue(descriptionEditText.text.toString())
                 listsRef.child("listIcon").setValue(selectedIcon)
+                listsRef.child("users").child(loggedUser).setValue(true)
+
+                val userRef = database.getReference("App").child("users").child(loggedUser).child("lists").child(listKey.toString()).setValue(true)
 
                 val userInvitationsRef = database.getReference("App").child("userInvitations")
                 userList.forEach {
@@ -316,14 +320,14 @@ class AddListFragment : Fragment() {
                     listInvitationsRef.child("state").setValue(null)
                 }
 
-                val roomDatabase = AppDatabase.getAppDatabase(view.context)
-
-                val user = roomDatabase.getUsuarioDao().getUsuarioByID(loggedUser)
-                val listToInsert = ListaEntity(listsRef.key!!, loggedUser,
-                    listNameEditText.text.toString(), descriptionEditText.text.toString(),
-                    loggedUser.toString(), user.username, checkShare.isChecked, selectedIcon, colors[selectedColor])
-
-                roomDatabase.getListaDao().insertList(listToInsert)
+//                val roomDatabase = AppDatabase.getAppDatabase(view.context)
+//
+//                val user = roomDatabase.getUsuarioDao().getUsuarioByID(loggedUser)
+//                val listToInsert = ListaEntity(listsRef.key!!, loggedUser,
+//                    listNameEditText.text.toString(), descriptionEditText.text.toString(),
+//                    loggedUser.toString(), user.username, checkShare.isChecked, selectedIcon, colors[selectedColor])
+//
+//                roomDatabase.getListaDao().insertList(listToInsert)
 
                 Toast.makeText(view.context, "Lista Creada Correctamente", Toast.LENGTH_SHORT).show()
             }

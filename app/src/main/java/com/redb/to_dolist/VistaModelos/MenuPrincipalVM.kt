@@ -2,6 +2,7 @@ package com.redb.to_dolist.VistaModelos
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.DB.Entidades.TareaEntity
 import com.redb.to_dolist.R
 
@@ -10,6 +11,7 @@ class MenuPrincipalVM : ViewModel() {
     private val currentList = MutableLiveData<String>()
     private var taskList : MutableLiveData<MutableList<TareaEntity>> = MutableLiveData()
     private var selectedList:String=""
+    lateinit var databaseRoom:AppDatabase
 
     init {
         currentList.value = "12345"

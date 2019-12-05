@@ -105,39 +105,22 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
 //      val userReference1=database.getReference("App").child("users").setValue("holita")
         //val userReference=database.getReference("App").child("users").orderByChild("email").equalTo("raul@hotmail.com")
-        val userReference=database.getReference("App").child("users").orderByKey().equalTo(usuarioActual)
+        val userReference=database.getReference("App").child("users").child(usuarioActual.toString())
         //database.getReference("App").child("prueba").setValue("holita")
-        userReference.addChildEventListener(object : ChildEventListener{
-            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                val user:User? = p0.getValue(User::class.java)
-                tvUserName.setText(user!!.username)
-                tvUserMail.setText(user!!.email)
-            }
-
-            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                val user:User? = p0.getValue(User::class.java)
-                user?.id =p0.key
-
-                tvUserName.setText(user!!.username)
-                tvUserMail.setText(user!!.email)
-            }
-
+        userReference.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onChildRemoved(p0: DataSnapshot) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+            override fun onDataChange(p0: DataSnapshot) {
+                var user:User? = p0.getValue(User::class.java)
+                tvUserName.setText(user!!.username)
+                tvUserMail.setText(user!!.email)            }
         })
 
 
 
-        //addListItems()
+        addListItems()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -222,6 +205,8 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                     model.setSelectedList(currentList.id.toString())
                                     model.setCurrentTaskList(db.getTareaDao().getTaskFromList(currentList.id.toString()) as MutableList<TareaEntity>)
                                     navController.navigate(R.id.nav_home)
+                                    db.getAplicacionDao().setearLista(currentList.id.toString())
+                                    model.databaseRoom=db
                                     true
                                 }
                             }
@@ -231,6 +216,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                     model.setSelectedList(currentList.id.toString())
                                     model.setCurrentTaskList(db.getTareaDao().getTaskFromList(currentList.id.toString()) as MutableList<TareaEntity>)
                                     navController.navigate(R.id.nav_home)
+                                    db.getAplicacionDao().setearLista(currentList.id.toString())
                                     true
                                 }
                             }
