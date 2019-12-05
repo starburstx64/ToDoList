@@ -31,6 +31,13 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         val db = AppDatabase.getAppDatabase(this)
+
+        var logedUser = db.getAplicacionDao().getLoggedUser()
+        if(logedUser!=null)
+        {
+            val intent = Intent(this@LoginActivity, MenuPrincipalActivity::class.java)
+            startActivity(intent)
+        }
         Correo = findViewById(R.id.IniciarSesion)
         Contrasña = findViewById(R.id.Contraseña)
         IniciarSesion = findViewById(R.id.btnIniciar)
@@ -80,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
                         Snackbar.make(it, "Usuario aun no aprobado", Snackbar.LENGTH_SHORT).show()
                     else if (user.password != Contrasña.text.toString())
                         Snackbar.make(it, "Contraseña incorrecta", Snackbar.LENGTH_SHORT).show()
-                    else { //Si si nos logeamos exitosamente
+                    else { //si nos logeamos exitosamente
 
                         //val logedUserKey = user.id.toString()
                         var UserIniciarSesion = UsuarioEntity(

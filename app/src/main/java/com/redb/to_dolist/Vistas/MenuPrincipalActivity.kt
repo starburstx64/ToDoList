@@ -58,6 +58,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show()
 //        }
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView : NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
@@ -313,16 +314,6 @@ class MenuPrincipalActivity : AppCompatActivity() {
                 }
             }
         })
-
-
-//        val item = menu.add(0,Menu.NONE,1,"Listas").setIcon(R.drawable.ic_feedback_black_24dp).setOnMenuItemClickListener {
-//            tvUserName.setText("hola")
-//            navController.navigate(R.id.nav_home)
-//            true
-//        }
-//        //item.setActionView(R.layout.fragment_home)
-//
-//        menu.add(0,Menu.NONE,1,"Listas2")
 
         navView.invalidate()
     }
