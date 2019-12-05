@@ -19,17 +19,12 @@
         <activity android:name=".AddEditTaskActivity" />
         <activity android:name=".Vistas.ActivityList" />
         <activity android:name=".Vistas.RegistrarActivity"/>
-        <activity
-            android:name=".Lista_Activity"
-            android:label="@string/title_activity_lista_" />
-
         <activity android:name=".Vistas.LoginActivity" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-        <activity android:name=".Vistas.LoginActivity">
         </activity>
         <activity
             android:name=".Vistas.MenuPrincipalActivity"

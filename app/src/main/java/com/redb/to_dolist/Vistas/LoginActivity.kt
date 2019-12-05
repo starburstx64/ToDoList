@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
                     user.confirmed=    p0.getValue(User::class.java)!!.confirmed
 
 
-                    var hijoEstoEsSal= p0.children.forEach{
+                    p0.children.forEach{
                        user.username=it.child("username").value.toString()
                         user.password=it.child("password").value.toString()
                         user.id = it.key
@@ -82,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
                         Snackbar.make(it, "Contraseña incorrecta", Snackbar.LENGTH_SHORT).show()
                     else { //Si si nos logeamos exitosamente
 
-                        val logedUserKey = user.id.toString()
+                        //val logedUserKey = user.id.toString()
                         var UserIniciarSesion = UsuarioEntity(
                             user.id!!,
                             user.username,

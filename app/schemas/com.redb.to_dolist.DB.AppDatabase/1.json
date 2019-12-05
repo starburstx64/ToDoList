@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bed9990beec250ad1f576892a635e764",
+    "identityHash": "6b6d6f25aa23eeaa4a43da1c188a7de5",
     "entities": [
       {
         "tableName": "Aplicacion",
@@ -213,7 +213,7 @@
       },
       {
         "tableName": "Tarea",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTarea` TEXT NOT NULL, `idLista` TEXT NOT NULL, `title` TEXT NOT NULL, `importance` INTEGER NOT NULL, `dueDate` INTEGER NOT NULL, `completed` INTEGER NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `creatorIcon` INTEGER NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`idTarea`), FOREIGN KEY(`idLista`) REFERENCES `Lista`(`idLista`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTarea` TEXT NOT NULL, `idLista` TEXT NOT NULL, `title` TEXT NOT NULL, `importance` INTEGER NOT NULL, `dueDate` INTEGER, `completed` INTEGER NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `creatorIcon` INTEGER NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`idTarea`), FOREIGN KEY(`idLista`) REFERENCES `Lista`(`idLista`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "idTarea",
@@ -243,7 +243,7 @@
             "fieldPath": "dueDate",
             "columnName": "dueDate",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "completed",
@@ -354,7 +354,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bed9990beec250ad1f576892a635e764')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6b6d6f25aa23eeaa4a43da1c188a7de5')"
     ]
   }
 }
