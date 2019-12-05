@@ -31,7 +31,7 @@ class MenuPrincipalVM : ViewModel() {
     {
         selectedList=idLista
     }
-
+    
 
     fun getCurrentListID() : String {
         return currentList.value!!
