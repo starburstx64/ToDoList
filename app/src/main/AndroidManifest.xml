@@ -18,12 +18,14 @@
         android:theme="@style/AppTheme">
         <activity android:name=".AddEditTaskActivity" />
         <activity android:name=".Vistas.ActivityList" />
-        <activity android:name=".Vistas.RegistrarActivity"/>
+        <activity android:name=".Vistas.RegistrarActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Lista_Activity"
             android:label="@string/title_activity_lista_" />
 
-        <activity android:name=".Vistas.LoginActivity" >
+        <activity android:name=".Vistas.LoginActivity"
+            android:screenOrientation="portrait">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
