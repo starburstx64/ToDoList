@@ -9,6 +9,7 @@ class MenuPrincipalVM : ViewModel() {
 
     private val currentList = MutableLiveData<String>()
     private var taskList : MutableLiveData<MutableList<TareaEntity>> = MutableLiveData()
+    private var selectedList:String=""
 
     init {
         currentList.value = "12345"
@@ -25,6 +26,12 @@ class MenuPrincipalVM : ViewModel() {
     fun setCurrentListID(idList : String) {
         currentList.value = idList
     }
+
+    fun setSelectedList(idLista:String)
+    {
+        selectedList=idLista
+    }
+
 
     fun getCurrentListID() : String {
         return currentList.value!!

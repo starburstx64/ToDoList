@@ -24,4 +24,7 @@ interface TareaDao {
     @Update
     fun ModificarTarea(tarea: TareaEntity)
 
+    @Query("SELECT * FROM tarea WHERE idLista=:idLista")
+    fun getTaskFromList(idLista:String):List<TareaEntity>
+
 }

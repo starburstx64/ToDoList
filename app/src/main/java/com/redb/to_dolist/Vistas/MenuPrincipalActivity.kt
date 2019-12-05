@@ -208,11 +208,19 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
                             if(currentList!!.shared==false)
                             {
-                                val item = menu.add(0,Menu.NONE,1,currentList.title)
+                                val item = menu.add(0,Menu.NONE,1,currentList.title).setOnMenuItemClickListener {
+                                    model.setSelectedList(currentList.id.toString())
+                                    model.setCurrentTaskList(db.getTareaDao().getTaskFromList(currentList.id.toString()) as MutableList<TareaEntity>)
+                                    true
+                                }
                             }
                             else
                             {
-                                val item =menu.add(1,Menu.NONE,2,currentList.title)
+                                val item =menu.add(1,Menu.NONE,2,currentList.title).setOnMenuItemClickListener {
+                                    model.setSelectedList(currentList.id.toString())
+                                    model.setCurrentTaskList(db.getTareaDao().getTaskFromList(currentList.id.toString()) as MutableList<TareaEntity>)
+                                    true
+                                }
                             }
                         }
                     })
