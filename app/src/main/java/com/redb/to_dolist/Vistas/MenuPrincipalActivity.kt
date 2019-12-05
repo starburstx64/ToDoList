@@ -127,7 +127,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
 
 
-        addListItems()
+        //addListItems()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
