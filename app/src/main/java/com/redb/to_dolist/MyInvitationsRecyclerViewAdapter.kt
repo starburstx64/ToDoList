@@ -10,6 +10,7 @@ import com.redb.to_dolist.DB.Entidades.InvitacionEntity
 
 
 import com.redb.to_dolist.InvitationsFragment.OnListFragmentInteractionListener
+import com.redb.to_dolist.Vistas.MenuPrincipalActivity
 import com.redb.to_dolist.dummy.DummyContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_invitations.view.*
@@ -21,12 +22,14 @@ import kotlinx.android.synthetic.main.rv_list_name_holder.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class MyInvitationsRecyclerViewAdapter(
-    private val mValues: List<String>,
-    private val mListener: OnListFragmentInteractionListener?
+    private var mRows: List<InvitationsFragment.InvitationRow>,
+    private val mListener: OnListFragmentInteractionListener?,
+    private val activity: MenuPrincipalActivity
 ) : RecyclerView.Adapter<MyInvitationsRecyclerViewAdapter.ViewHolder>() {
 
-    init {
-
+    fun setData(newList : List<InvitationsFragment.InvitationRow>) {
+        mRows = newList
+        if (newList.isNotEmpty()) notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,23 +39,23 @@ class MyInvitationsRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
+        val item = mRows[position].listTitle + " by " + mRows[position].creatorName
         holder.mIdView.text = item
         //holder.mContentView.text = item.content
 
         with(holder.mView) {
             tag = item
-            findViewById<ImageButton>(R.id.task_button_confirmar).setOnClickListener {
-                // Aceptar Invitatcion
+            findViewById<ImageButton>(R.id.invitation_button_confirmar).setOnClickListener {
+                activity.handleInvitation(mRows[position].idInvitation, true)
             }
 
-            findViewById<ImageButton>(R.id.task_button_cancel).setOnClickListener {
-                // Eliminar Invitacion
+            findViewById<ImageButton>(R.id.invitation_button_cancelar).setOnClickListener {
+                activity.handleInvitation(mRows[position].idInvitation,false)
             }
         }
     }
 
-    override fun getItemCount(): Int = mValues.size
+    override fun getItemCount(): Int = mRows.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mIdView: TextView = mView.list_name_textView_nombre
