@@ -11,13 +11,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="190dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/Nombre"
         android:inputType="textPersonName"
+        android:maxLength="25"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="" tools:targetApi="o"/>
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/CorreoRegistro"
@@ -28,6 +30,7 @@
         android:ems="10"
         android:hint="@string/CorreoElectronico"
         android:inputType="textEmailAddress"
+        android:maxLength="25"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/NombreUsuario" />
@@ -40,6 +43,7 @@
         android:ems="10"
         android:hint="@string/Contraseña"
         android:inputType="textPassword"
+        android:maxLength="15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CorreoRegistro" />
@@ -52,6 +56,7 @@
         android:ems="10"
         android:hint="@string/confirmarContraseña"
         android:inputType="textPassword"
+        android:maxLength="15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ContraseñaRegistro" />
@@ -73,7 +78,6 @@
         android:layout_height="119dp"
         android:src="@drawable/foto_01"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ConfirmarContraseñaRegistro" />
 

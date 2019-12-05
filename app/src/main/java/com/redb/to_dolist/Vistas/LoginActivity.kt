@@ -50,66 +50,89 @@ class LoginActivity : AppCompatActivity() {
         }
 
         IniciarSesion.setOnClickListener {
-
-            val loginReference = database.getReference("App").child("users").orderByChild("email")
-                .equalTo(Correo.text.toString())
-            loginReference.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (!p0.exists()) {
-                        Snackbar.make(it, "Correo no registrado", Snackbar.LENGTH_SHORT).show()
-                    }
-                    var user=User()
-                    user.username=    p0.getValue(User::class.java)!!.username
-                    user.email=    p0.getValue(User::class.java)!!.email
-                    user.password=    p0.getValue(User::class.java)!!.password
-                    user.selectedAvatar=    p0.getValue(User::class.java)!!.selectedAvatar
-                    user.confirmed=    p0.getValue(User::class.java)!!.confirmed
+            if (Correo.text.isEmpty() || Contrasña.text.isEmpty()) {
 
 
-                    p0.children.forEach{
-                       user.username=it.child("username").value.toString()
-                        user.password=it.child("password").value.toString()
-                        user.id = it.key
-                        user.email=it.child("email").value.toString()
-                        user.selectedAvatar=it.child("selectedAvatar").value.toString().toInt()
-                        user.confirmed=it.child("confirmed").value.toString().toBoolean()
+                Snackbar.make(it, "Llene todos los campos", Snackbar.LENGTH_LONG).show()
+
+            } else {
+                val loginReference =
+                    database.getReference("App").child("users").orderByChild("email")
+                        .equalTo(Correo.text.toString())
+                loginReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     }
 
+                    override fun onDataChange(p0: DataSnapshot) {
+                        if (!p0.exists()) {
+                            Snackbar.make(it, "Correo no registrado", Snackbar.LENGTH_SHORT).show()
+                            Contrasña.text.clear()
+                            Correo.text.clear()
+                        } else {
+                            var user = User()
+                            user.username = p0.getValue(User::class.java)!!.username
+                            user.email = p0.getValue(User::class.java)!!.email
+                            user.password = p0.getValue(User::class.java)!!.password
+                            user.selectedAvatar = p0.getValue(User::class.java)!!.selectedAvatar
+                            user.confirmed = p0.getValue(User::class.java)!!.confirmed
 
+                            var hijoEstoEsSal = p0.children.forEach {
+                                user.username = it.child("username").value.toString()
+                                user.password = it.child("password").value.toString()
+                                user.id = it.key
+                                user.email = it.child("email").value.toString()
+                                user.selectedAvatar =
+                                    it.child("selectedAvatar").value.toString().toInt()
+                                user.confirmed = it.child("confirmed").value.toString().toBoolean()
+                            }
 
+                            if (user.confirmed == false)
+                                Snackbar.make(
+                                    it,
+                                    "Usuario aun no aprobado",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            else if (user.password != Contrasña.text.toString())
+                                Snackbar.make(
+                                    it,
+                                    "Contraseña incorrecta",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            else { //Si si nos logeamos exitosamente
 
+                                Contrasña.text.clear()
+                                Correo.text.clear()
+                                var UserIniciarSesion = UsuarioEntity(
+                                    user.id!!,
+                                    user.username,
+                                    user.password,
+                                    user.selectedAvatar,
+                                    user.email
 
-                    if (user.confirmed == false)
-                        Snackbar.make(it, "Usuario aun no aprobado", Snackbar.LENGTH_SHORT).show()
-                    else if (user.password != Contrasña.text.toString())
-                        Snackbar.make(it, "Contraseña incorrecta", Snackbar.LENGTH_SHORT).show()
-                    else { //si nos logeamos exitosamente
+                                )
 
-                        //val logedUserKey = user.id.toString()
-                        var UserIniciarSesion = UsuarioEntity(
-                            user.id!!,
-                            user.username,
-                            user.password,
-                            user.selectedAvatar,
-                            user.email
-
-                        )
+                                Usuario.LogearUsuario(UserIniciarSesion, db)
+                                val intent =
+                                    Intent(this@LoginActivity, MenuPrincipalActivity::class.java)
+                                startActivity(intent)
+                            }
+                        }
 
                         Usuario.LogearUsuario(UserIniciarSesion, db)
                         db.getAplicacionDao().setearLista("Todas")
                         val intent = Intent(this@LoginActivity, MenuPrincipalActivity::class.java)
                         startActivity(intent)
                     }
-
-                }
-            })
-
-
+                })
+            }
         }
+
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
     }
 
     override fun onBackPressed() {
