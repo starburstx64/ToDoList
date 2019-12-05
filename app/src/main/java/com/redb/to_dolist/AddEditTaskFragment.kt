@@ -199,8 +199,6 @@ class AddEditTaskFragment : Fragment() {
 
                 Toast.makeText(view.context, "La tarea ha sido agregada con exito", Toast.LENGTH_SHORT)
                     .show()
-
-                (activity as AppCompatActivity).onBackPressed()
             }
         }
 
