@@ -21,9 +21,10 @@ class RegistrarActivity : AppCompatActivity() {
     private lateinit var confirmarContraseña: EditText
     private lateinit var imagen: ImageView
     private lateinit var btnRegistrar: Button
+
+    private lateinit var btnprueba: Button
     private val model by lazy { ViewModelProviders.of(this)[RegistroVM::class.java] }
     private var index = 0
-
 
     var fotoIndex: Int = 0
     val fotos = arrayOf(
@@ -43,13 +44,15 @@ class RegistrarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrar)
-        val db = AppDatabase.getAppDatabase(this)
-        Stetho.initializeWithDefaults(this)
+
+
 
         nombreUsuario = findViewById(R.id.NombreUsuario)
         correoElectronico = findViewById(R.id.CorreoRegistro)
         contraseña = findViewById(R.id.ContraseñaRegistro)
         confirmarContraseña = findViewById(R.id.ConfirmarContraseñaRegistro)
+
+        btnRegistrar = findViewById(R.id.btnRegistrar)
         imagen = findViewById(R.id.ImagenId)
         btnRegistrar = findViewById(R.id.btnRegistrar)
 
@@ -69,11 +72,12 @@ class RegistrarActivity : AppCompatActivity() {
             val database = FirebaseDatabase.getInstance()
             val usersRef = database.getReference("App").child("users")
 
-            val loginReference = usersRef.orderByChild("email").equalTo(correoElectronico.text.toString())
+            val loginReference =
+                usersRef.orderByChild("email").equalTo(correoElectronico.text.toString())
             loginReference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                    if (!dataSnapshot.hasChildren() && !dataSnapshot.children.iterator().hasNext()     ) {
+                    if (!dataSnapshot.hasChildren() && !dataSnapshot.children.iterator().hasNext()) {
                         model.RegistrarUsuario()
                         Snackbar.make(it, "Registro Exitoso", Snackbar.LENGTH_LONG).show()
 
@@ -91,45 +95,18 @@ class RegistrarActivity : AppCompatActivity() {
                 }
             })
         }
-
-
-        /*  usersRef.addChildEventListener(object : ChildEventListener {
-              override fun onCancelled(p0: DatabaseError) {
-
-              }
-
-              override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-
-              }
-
-              override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-
-              }
-
-              override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                  val user: Usuario? = p0.getValue(Usuario::class.java)
-                  user?.userName = p0.key!!
-              }
-
-              override fun onChildRemoved(p0: DataSnapshot) {
-
-              }
-
-
-          })*/
-
     }
 
     fun seleccionarFoto() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Elige una foto de perfil")
-        var value:ImageView
+        var value: ImageView
 
 
         val adaptadorDialogo =
-            ArrayAdapter<ImageView>(this, android.R.layout.simple_selectable_list_item)
-        adaptadorDialogo.add(R.drawable.foto_01 as ImageView)
-        /*adaptadorDialogo.add("Buffon")
+            ArrayAdapter<String>(this, android.R.layout.simple_selectable_list_item)
+        adaptadorDialogo.add("Mujer Zombie")
+        adaptadorDialogo.add("Buffon")
         adaptadorDialogo.add("Payaso")
         adaptadorDialogo.add("Persona Loca")
         adaptadorDialogo.add("Fantasma")
@@ -138,7 +115,7 @@ class RegistrarActivity : AppCompatActivity() {
         adaptadorDialogo.add("Reina")
         adaptadorDialogo.add("Esqueleto")
         adaptadorDialogo.add("Vikingo")
-        adaptadorDialogo.add("Hombre Zombi")*/
+        adaptadorDialogo.add("Hombre Zombi")
         builder.setAdapter(adaptadorDialogo) { dialog, which ->
             fotoIndex = which
 
@@ -157,10 +134,4 @@ class RegistrarActivity : AppCompatActivity() {
         return fotos.get(indice)
     }
 
-
-    fun obtnerIndice(num: Int) {
-        val indice = num
-        index = indice
-
-    }
 }

@@ -6,6 +6,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.redb.to_dolist.Modelos.FBModels.User
 import com.redb.to_dolist.Modelos.Usuario
 
 class RegistroVM : ViewModel() {
@@ -40,12 +41,12 @@ class RegistroVM : ViewModel() {
 
     fun RegistrarUsuario() {
 
-        val user = Usuario(
-            idUser.trim(),
+        val user = User(
             name.trim(),
+            correoElectronico.trim(),
             password.trim(),
             indexImage,
-            correoElectronico.trim()
+            false
         )
         usersRef.push().setValue(user)
     }

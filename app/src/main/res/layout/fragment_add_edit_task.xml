@@ -27,7 +27,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/addEdit_agregar"
                     android:textAlignment="center"
-                    android:textSize="30sp"/>
+                    android:textSize="30sp" />
 
             </LinearLayout>
 
@@ -42,14 +42,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/addEdit_nombre"
-                    android:textSize="25sp"/>
+                    android:textSize="25sp" />
 
                 <EditText
                     android:id="@+id/addEdit_editText_nombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/addEdit_hintNombre"
-                    android:textSize="25sp"/>
+                    android:textSize="25sp" />
 
             </LinearLayout>
 
@@ -64,8 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/addEdit_descripcion"
-                    android:textSize="25sp"/>
-
+                    android:textSize="25sp" />
 
 
                 <EditText
@@ -77,6 +76,8 @@
                     android:maxLines="10"
                     android:minLines="6"
                     android:scrollbars="vertical" />
+
+
 
             </LinearLayout>
 
@@ -93,7 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/addEdit_importancia"
-                    android:textSize="25sp"/>
+                    android:textSize="25sp" />
 
                 <RadioGroup
                     android:layout_width="match_parent"
@@ -103,21 +104,24 @@
                         android:id="@+id/addEdit_radioButton_sinAsignar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checked="true"
                         android:text="@string/addEdit_importancia_noAsignada"
-                        android:textSize="20sp"
-                        android:checked="true"/>
+                        android:textSize="20sp" />
+
                     <RadioButton
                         android:id="@+id/addEdit_radioButton_baja"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/addEdit_importancia_baja"
                         android:textSize="20sp" />
+
                     <RadioButton
                         android:id="@+id/addEdit_radioButton_normal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/addEdit_importancia_normal"
                         android:textSize="20sp" />
+
                     <RadioButton
                         android:id="@+id/addEdit_radioButton_alta"
                         android:layout_width="wrap_content"
@@ -142,13 +146,26 @@
                     android:id="@+id/addEdit_textView_fecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/addEdit_fecha"
-                    android:textSize="25sp"/>
+                    android:text="@string/addEdit_fecha2"
+                    android:textSize="25sp" />
+
+
+                <CheckBox
+                    android:id="@+id/addEdit_checkBox_fecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/addEdit_fecha" />
+
 
                 <DatePicker
                     android:id="@+id/addEdit_datePicker_fecha"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:headerBackground="@color/blood"
+                    android:screenReaderFocusable="true"
+                    android:visibility="gone" />
+
 
             </LinearLayout>
 
@@ -163,8 +180,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/addEdit_agregarTarea"
-                    />
+                    android:text="@string/addEdit_agregarTarea" />
             </LinearLayout>
 
         </LinearLayout>

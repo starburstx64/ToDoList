@@ -1,6 +1,6 @@
 package com.redb.to_dolist.Modelos.FBModels
 
-data class List (
+data class ListFB (
     var title:String="",
     var description:String="",
     var creator:String="",

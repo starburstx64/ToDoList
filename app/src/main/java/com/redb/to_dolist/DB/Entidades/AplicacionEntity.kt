@@ -9,7 +9,7 @@ import androidx.room.*
             entity = UsuarioEntity::class,
             parentColumns = arrayOf("idUsuario"),
             childColumns = arrayOf("logedUser"),
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.SET_NULL
         )
     ),
     indices = [Index("logedUser")]
