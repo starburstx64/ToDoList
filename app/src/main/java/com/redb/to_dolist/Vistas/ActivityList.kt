@@ -51,4 +51,8 @@ class ActivityList : AppCompatActivity() {
             sharedCheckBox.isChecked = currentList.shared
         }
     }
+
+    fun getCurrentListID() : String {
+        return idList
+    }
 }
