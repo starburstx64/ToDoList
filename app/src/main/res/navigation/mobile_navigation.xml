@@ -13,5 +13,10 @@
         android:id="@+id/nav_add_lists"
         android:name="com.redb.to_dolist.Vistas.AddListFragment"
         android:label="Listas" />
+
+    <fragment
+        android:id="@+id/nav_invitations"
+        android:name="com.redb.to_dolist.InvitationsFragment"
+        android:label="Invitaciones"/>
     
 </navigation>
