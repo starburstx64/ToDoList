@@ -141,29 +141,32 @@ class HomeFragment : Fragment() {
         val currentList = roomDatabase.getListaDao().getListByID(model.getCurrentListID())
         taskRoot = view.findViewById(R.id.task_coordinator_root)
 
-        val backgroundColor = when (currentList.backgroundColor) {
-            "Red" -> {
-                R.color.red
+        if(currentList!=null) {
+
+            val backgroundColor = when (currentList.backgroundColor) {
+                "Red" -> {
+                    R.color.red
+                }
+
+                "Blue" -> {
+                    R.color.blue
+                }
+
+                "Yellow" -> {
+                    R.color.yellow
+                }
+
+                "Green" -> {
+                    R.color.green
+                }
+
+                else -> {
+                    R.color.white
+                }
             }
 
-            "Blue" -> {
-                R.color.blue
-            }
-
-            "Yellow" -> {
-                R.color.yellow
-            }
-
-            "Green" -> {
-                R.color.green
-            }
-
-            else -> {
-                R.color.white
-            }
+            taskRoot.setBackgroundResource(backgroundColor)
         }
-
-        taskRoot.setBackgroundResource(backgroundColor)
     }
 
     fun removeTask(position : Int) {
