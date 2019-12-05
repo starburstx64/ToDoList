@@ -6,6 +6,7 @@ import android.app.ListActivity
 import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -70,7 +71,8 @@ class MenuPrincipalActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
-                R.id.nav_add_lists
+                R.id.nav_add_lists,
+                R.id.nav_invitations
             ), drawerLayout
         )
 
@@ -87,7 +89,8 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
 
         menu.findItem(R.id.nav_button_sync).setOnMenuItemClickListener {
-            //tvUserName.setText("probando sincronizacion")
+            navController.navigate(R.id.nav_invitations)
+            drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
         menu.findItem(R.id.nav_button_all).setOnMenuItemClickListener {
@@ -429,6 +432,10 @@ class MenuPrincipalActivity : AppCompatActivity() {
             else->model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
         }
         //model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
+    }
+
+    fun handleInvitation( id : String, acepted : Boolean) {
+
     }
 
     override fun onBackPressed() {

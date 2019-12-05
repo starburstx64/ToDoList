@@ -62,7 +62,7 @@
     <string name="addEdit_hintNombre">Ej: Ejemplo</string>
     <string name="addEdit_agregarTarea">Agregar Tarea</string>
     <string name="task_importance">Nv.%1d</string>
-    <string name="task_dueDate">Para: %1d</string>
+    <string name="task_dueDate">Para: %1s/%2s/%3s</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

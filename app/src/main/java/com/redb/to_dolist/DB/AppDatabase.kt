@@ -56,7 +56,7 @@ abstract class AppDatabase: RoomDatabase(){
         fun initializeData(db: SupportSQLiteDatabase) {
             db.beginTransaction()
 
-            db.execSQL("INSERT INTO Aplicacion(idAplicacion, logedUser) VALUES (0, 'raulhotmailcom')")
+            db.execSQL("INSERT INTO Aplicacion(idAplicacion, logedUser) VALUES (0, null)")
             db.execSQL("INSERT INTO Usuario(idUsuario, username, password, selectedAvatar, email) VALUES ('raulhotmailcom', 'Raul', 'notiene', 1, 'raul@hotmail.com')")
 
             //db.execSQL("INSERT INTO Lista(idLista, idUsuario, title, description, creator, creatorName, shared, listIcon, backgroudColor) VALUES ('12345', 'raulhotmailcom', 'Terminar Proyecto', 'notiene', 'raul', 'raul', 1, '1', 'Red')")

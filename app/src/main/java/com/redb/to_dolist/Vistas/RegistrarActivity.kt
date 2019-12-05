@@ -61,47 +61,66 @@ class RegistrarActivity : AppCompatActivity() {
             imagen.setImageResource(obtenerFoto(fotoIndex))
         }
         btnRegistrar.setOnClickListener {
-            var usuarioRegistro = Usuario(
-                correoElectronico.text.toString(),
-                nombreUsuario.text.toString(),
-                contraseña.text.toString(),
-                fotoIndex,
-                correoElectronico.text.toString()
-            )
-            model.SetDatos(usuarioRegistro, confirmarContraseña.text.toString())
-            val database = FirebaseDatabase.getInstance()
-            val usersRef = database.getReference("App").child("users")
 
-            val loginReference =
-                usersRef.orderByChild("email").equalTo(correoElectronico.text.toString())
-            loginReference.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if (nombreUsuario.text.isEmpty() ||
+                correoElectronico.text.isEmpty() ||
+                contraseña.text.isEmpty() ||
+                confirmarContraseña.text.isEmpty()
+            ) {
+                Snackbar.make(it, "Llene todos los campos", Snackbar.LENGTH_LONG).show()
+            } else {
+                if (contraseña.text.toString() == confirmarContraseña.text.toString()) {
+                    var usuarioRegistro = Usuario(
+                        correoElectronico.text.toString(),
+                        nombreUsuario.text.toString(),
+                        contraseña.text.toString(),
+                        fotoIndex,
+                        correoElectronico.text.toString()
+                    )
+                    model.SetDatos(usuarioRegistro, confirmarContraseña.text.toString())
+                    val database = FirebaseDatabase.getInstance()
+                    val usersRef = database.getReference("App").child("users")
 
-                    if (!dataSnapshot.hasChildren() && !dataSnapshot.children.iterator().hasNext()) {
-                        model.RegistrarUsuario()
-                        Snackbar.make(it, "Registro Exitoso", Snackbar.LENGTH_LONG).show()
+                    val loginReference =
+                        usersRef.orderByChild("email").equalTo(correoElectronico.text.toString())
+                    loginReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        val intent = Intent(this@RegistrarActivity, LoginActivity::class.java)
-                        startActivity(intent)
-                    } else Snackbar.make(
-                        it,
-                        "El Correo Proporcionado ya existe",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
+                            if (!dataSnapshot.hasChildren() && !dataSnapshot.children.iterator().hasNext()) {
+                                confirmarContraseña.text.clear()
+                                contraseña.text.clear()
+                                nombreUsuario.text.clear()
+                                correoElectronico.text.clear()
+                                model.RegistrarUsuario()
+                                Snackbar.make(it, "Registro Exitoso", Snackbar.LENGTH_LONG).show()
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    throw databaseError.toException()
-                }
-            })
+                                val intent =
+                                    Intent(this@RegistrarActivity, LoginActivity::class.java)
+                                startActivity(intent)
+                            } else Snackbar.make(
+                                it,
+                                "El Correo Proporcionado ya existe",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            throw databaseError.toException() as Throwable
+                        }
+                    })
+                } else Snackbar.make(
+                    it,
+                    "Las contraseñas no coinciden",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
     fun seleccionarFoto() {
+        imagen.resources
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Elige una foto de perfil")
-        var value: ImageView
-
 
         val adaptadorDialogo =
             ArrayAdapter<String>(this, android.R.layout.simple_selectable_list_item)
@@ -132,6 +151,11 @@ class RegistrarActivity : AppCompatActivity() {
 
     fun obtenerFoto(indice: Int): Int {
         return fotos.get(indice)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
     }
 
 }

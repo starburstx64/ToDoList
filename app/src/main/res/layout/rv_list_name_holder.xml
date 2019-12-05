@@ -26,7 +26,7 @@
 
         <ImageButton
             android:layout_marginStart="10dp"
-            android:id="@+id/task_button_confirmar"
+            android:id="@+id/invitation_button_confirmar"
             android:layout_toEndOf="@+id/list_name_textView_nombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,8 +34,8 @@
 
         <ImageButton
             android:layout_marginStart="10dp"
-            android:id="@+id/task_button_cancelar"
-            android:layout_toEndOf="@+id/task_button_confirmar"
+            android:id="@+id/invitation_button_cancelar"
+            android:layout_toEndOf="@id/invitation_button_confirmar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_close_black_24dp" />
