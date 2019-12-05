@@ -154,14 +154,9 @@ class AddEditTaskFragment : Fragment() {
                 dia = "0" + dia
             }
 
-
             // calendar.set(year, month, day)
             val date = year.toString() + mes + dia
             val database = FirebaseDatabase.getInstance()
-
-
-
-
 
             if (addEdit_EditText_Nombre.text.isBlank()) {
 
@@ -177,7 +172,7 @@ class AddEditTaskFragment : Fragment() {
                 val taskRef = database.getReference("App").child("tasks").child(activeList).push()
 
                 if (!addEdit_CheckBox_AceptarFecha.isChecked) {
-                    taskRef.child("duedate").setValue("00000000")
+                    taskRef.child("duedate").setValue("0")
                 } else {
                     taskRef.child("duedate").setValue(date.toString())
 
@@ -199,11 +194,6 @@ class AddEditTaskFragment : Fragment() {
                 Toast.makeText(view.context, "La tarea ha sido agregada con exito", Toast.LENGTH_SHORT)
                     .show()
             }
-
-
-
-
-
         }
 
 
