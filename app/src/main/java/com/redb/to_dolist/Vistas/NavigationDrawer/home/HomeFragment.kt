@@ -1,5 +1,6 @@
 package com.redb.to_dolist.Vistas.NavigationDrawer.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,14 +9,22 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.redb.to_dolist.AddEditTaskActivity
 import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.DB.Entidades.TareaEntity
 import com.redb.to_dolist.R
+import com.redb.to_dolist.VistaModelos.MenuPrincipalVM
 
 class HomeFragment : Fragment() {
 
@@ -42,13 +51,16 @@ class HomeFragment : Fragment() {
                 descriptionTextView.text = task.descrition
 
                 linearLayoutRoot.setOnClickListener {
-                    // Notificar al activity cambiar el fragmento
+                    val toEditTaskActivity = Intent(fragment.activity, AddEditTaskActivity::class.java)
+                    toEditTaskActivity.putExtra("forEdit", true)
+                    toEditTaskActivity.putExtra("idTask", task.idTarea)
+                    fragment.startActivity(toEditTaskActivity)
                 }
 
                 completedCheckBox.setOnCheckedChangeListener {_, isCheked ->
                     if (isCheked) {
                         fragment.removeTask(layoutPosition)
-                        Snackbar.make(view, "Tarea Completada", Snackbar.LENGTH_LONG).setAction("Deshacer,"
+                        Snackbar.make(view, "Tarea Completada", Snackbar.LENGTH_LONG).setAction("Deshacer"
                         ) {
                             fragment.restoreTask()
                         }.show()
@@ -76,25 +88,24 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var model: MenuPrincipalVM
 
-    private val taskList = mutableListOf(TareaEntity("asasd", "asdad",
-        "Terminar Proyecto", 3, 20191011, false, "asda",
-        "David Ley", R.drawable.foto_01, "Padoru Padoru"), TareaEntity("sdsd", "gfd",
-        "Mandar a chinga a su madre", 1, 2020111, false, "sddd",
-        "Raul", R.drawable.foto_02, "Hola Rasa"))
+    private lateinit var  taskList : MutableList<TareaEntity>
 
     private var deletedTask : TareaEntity? = null
     private var deletedTaskPosition : Int? = null
 
     private lateinit var taskRecyclerView: RecyclerView
+    private lateinit var actionBar: ActionBar
+    private lateinit var fab : FloatingActionButton
+    private lateinit var taskRoot : CoordinatorLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         taskRecyclerView = view.findViewById<RecyclerView>(R.id.task_recyclerView_tareas).apply {
@@ -103,19 +114,69 @@ class HomeFragment : Fragment() {
             adapter = Adapter(this@HomeFragment)
         }
 
-        val roomDatabase = AppDatabase.getAppDatabase(view.context)
+        actionBar = (activity as AppCompatActivity).supportActionBar!!
+        actionBar.subtitle = "Hola Rasa"
+
+        fab = view.findViewById(R.id.task_floatingActionButton_add)
+        fab.setOnClickListener {
+            val toAddTaskActivity = Intent(view.context, AddEditTaskActivity::class.java)
+            startActivity(toAddTaskActivity)
+        }
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        model = ViewModelProviders.of(activity!!).get(MenuPrincipalVM::class.java)
+        model.getCurrentTaskList().observe(requireActivity(), object : Observer<MutableList<TareaEntity>>{
+            override fun onChanged(t: MutableList<TareaEntity>?) {
+                taskList = t!!
+                taskRecyclerView.adapter?.notifyDataSetChanged()
+            }
+        })
+
+        val roomDatabase = AppDatabase.getAppDatabase(view.context)
+        val currentList = roomDatabase.getListaDao().getListByID(model.getCurrentListID())
+        taskRoot = view.findViewById(R.id.task_coordinator_root)
+
+        if(currentList!=null) {
+
+            val backgroundColor = when (currentList.backgroundColor) {
+                "Red" -> {
+                    R.color.red
+                }
+
+                "Blue" -> {
+                    R.color.blue
+                }
+
+                "Yellow" -> {
+                    R.color.yellow
+                }
+
+                "Green" -> {
+                    R.color.green
+                }
+
+                else -> {
+                    R.color.white
+                }
+            }
+
+            taskRoot.setBackgroundResource(backgroundColor)
+        }
     }
 
     fun removeTask(position : Int) {
         deletedTask = taskList.removeAt(position)
         deletedTaskPosition = position
-        taskRecyclerView.adapter?.notifyDataSetChanged()
+        model.setCurrentTaskList(taskList)
     }
 
     fun restoreTask() {
         taskList.add(deletedTaskPosition!!, deletedTask!!)
-        taskRecyclerView.adapter?.notifyDataSetChanged()
+        model.setCurrentTaskList(taskList)
     }
 }
