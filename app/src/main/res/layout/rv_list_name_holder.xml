@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?android:listSeparatorTextViewStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        >
+
+
+        <TextView
+            tools:text="David Segovia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_name_textView_nombre"
+            android:layout_alignParentTop="true"
+            android:textSize="20sp"
+            />
+
+        <ImageButton
+            android:layout_marginStart="5dp"
+            android:id="@+id/task_button_confirmar"
+            android:layout_toEndOf="@+id/list_name_textView_nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_check_black_24dp" />
+
+        <ImageButton
+            android:layout_marginStart="5dp"
+            android:id="@+id/task_button_cancelar"
+            android:layout_toEndOf="@+id/task_button_confirmar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_close_black_24dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>
