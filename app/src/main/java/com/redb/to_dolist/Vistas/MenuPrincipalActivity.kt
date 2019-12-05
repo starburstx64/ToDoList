@@ -76,10 +76,26 @@ class MenuPrincipalActivity : AppCompatActivity() {
         tvUserMail=headerLayout.findViewById(R.id.nav_textView_userMail)
 
         val menu = navView.menu
+        val usuarioActual=db.getAplicacionDao().getLoggedUser()
 
         menu.findItem(R.id.nav_button_sync).setOnMenuItemClickListener {
             //tvUserName.setText("probando sincronizacion")
 
+            true
+        }
+        menu.findItem(R.id.nav_button_all).setOnMenuItemClickListener {
+            model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
+            navController.navigate(R.id.nav_home)
+            true
+        }
+        menu.findItem(R.id.nav_button_planing).setOnMenuItemClickListener {
+            model.setCurrentTaskList(db.getTareaDao().getPlaneadasTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
+            navController.navigate(R.id.nav_home)
+            true
+        }
+        menu.findItem(R.id.nav_button_planing).setOnMenuItemClickListener {
+            model.setCurrentTaskList(db.getTareaDao().getImportantTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
+            navController.navigate(R.id.nav_home)
             true
         }
 
@@ -89,7 +105,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
 //      val userReference1=database.getReference("App").child("users").setValue("holita")
         //val userReference=database.getReference("App").child("users").orderByChild("email").equalTo("raul@hotmail.com")
-        val userReference=database.getReference("App").child("users").orderByKey().equalTo("raulhotmailcom")
+        val userReference=database.getReference("App").child("users").orderByKey().equalTo(usuarioActual)
         //database.getReference("App").child("prueba").setValue("holita")
         userReference.addChildEventListener(object : ChildEventListener{
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
@@ -151,7 +167,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
         val menu = navView.menu
 
         //obtener la llave de nuestro usuario
-        val idUsuario="raulhotmailcom"
+        val idUsuario=db.getAplicacionDao().getLoggedUser().toString()
 
         //PRUEBA DE ELIMINADO DE LISTA
         //database.getReference("App").child("users").child(idUsuario).child("lists").child("-LvDbu4lMwtaYhMhkTtG").setValue(null)
@@ -205,6 +221,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                 val item = menu.add(0,Menu.NONE,1,currentList.title).setOnMenuItemClickListener {
                                     model.setSelectedList(currentList.id.toString())
                                     model.setCurrentTaskList(db.getTareaDao().getTaskFromList(currentList.id.toString()) as MutableList<TareaEntity>)
+                                    navController.navigate(R.id.nav_home)
                                     true
                                 }
                             }
@@ -213,6 +230,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                 val item =menu.add(1,Menu.NONE,2,currentList.title).setOnMenuItemClickListener {
                                     model.setSelectedList(currentList.id.toString())
                                     model.setCurrentTaskList(db.getTareaDao().getTaskFromList(currentList.id.toString()) as MutableList<TareaEntity>)
+                                    navController.navigate(R.id.nav_home)
                                     true
                                 }
                             }
