@@ -178,7 +178,7 @@ class AddEditTaskFragment : Fragment() {
                 ).show()
 
             } else {
-                val taskRef : DatabaseReference
+                /*val taskRef : DatabaseReference
                 val listid=db.getAplicacionDao().getAplicationList()
 
                 if ((activity as AddEditTaskActivity).forEdit()) {
@@ -187,7 +187,12 @@ class AddEditTaskFragment : Fragment() {
 
                 else {
 
-                    taskRef = database.getReference("App").child("tasks").child(listid).push()
+                    taskRef = database.getReference("App").child("tasks").child(listid).push()*/
+
+                val taskRef : DatabaseReference = if ((activity as? AddEditTaskActivity) != null) {
+                    database.getReference("App").child("tasks").child(activeList).child((activity as AddEditTaskActivity).getCurrentTaskID())
+                } else {
+                    database.getReference("App").child("tasks").child(activeList).push()
                 }
 
                 if (!addEdit_CheckBox_AceptarFecha.isChecked) {

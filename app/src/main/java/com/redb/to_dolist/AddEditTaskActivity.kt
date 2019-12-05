@@ -71,10 +71,6 @@ class AddEditTaskActivity : FragmentActivity() {
         }
     }
 
-    fun forEdit() : Boolean {
-        return forEdit
-    }
-
     fun getCurrentTaskID() : String {
         return idTask
     }
