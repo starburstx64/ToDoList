@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -127,6 +128,13 @@ class HomeFragment : Fragment() {
         actionBar.subtitle = "Hola Rasa"
 
         fab = view.findViewById(R.id.task_floatingActionButton_add)
+        val db = AppDatabase.getAppDatabase(view.context)
+        val listaActual = db.getAplicacionDao().getAplicationList()
+        when(listaActual)
+        {
+            "Todas","Planeadas","Importantes"->fab.isVisible=false
+            else->fab.isVisible=true
+        }
         fab.setOnClickListener {
             val toAddTaskActivity = Intent(view.context, AddEditTaskActivity::class.java)
             startActivity(toAddTaskActivity)
@@ -147,7 +155,7 @@ class HomeFragment : Fragment() {
         })
 
         val roomDatabase = AppDatabase.getAppDatabase(view.context)
-        val currentList = roomDatabase.getListaDao().getListByID(model.getCurrentListID())
+        val currentList = roomDatabase.getListaDao().getListByID(roomDatabase.getAplicacionDao().getAplicationList())
         taskRoot = view.findViewById(R.id.task_coordinator_root)
 
         if(currentList!=null) {

@@ -212,19 +212,19 @@ class AddListFragment : Fragment() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 selectedIcon = when (p2) {
                     0 -> {
-                        R.drawable.trophy_gren
+                        1
                     }
 
                     1 -> {
-                        R.drawable.trophy_white
+                        2
                     }
 
                     2 -> {
-                        R.drawable.trophy_yellow
+                        3
                     }
 
                     else -> {
-                        R.drawable.trophy_gren
+                        1
                     }
                 }
             }

@@ -227,7 +227,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                     drawerLayout.closeDrawer(GravityCompat.START)
                                     model.databaseRoom=db
                                     true
-                                }
+                                }.setIcon(GetIconoLista(currentList.listIcon))
                             }
                             else
                             {
@@ -238,7 +238,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                     db.getAplicacionDao().setearLista(currentList.id.toString())
                                     drawerLayout.closeDrawer(GravityCompat.START)
                                     true
-                                }
+                                }.setIcon(GetIconoLista(currentList.listIcon))
                             }
                             val tasksReference= database.getReference("App").child("tasks").child(idLista)
                             tasksReference.addChildEventListener(object : ChildEventListener{
@@ -402,5 +402,16 @@ class MenuPrincipalActivity : AppCompatActivity() {
         super.onBackPressed()
 
         finishAffinity()
+    }
+
+    fun GetIconoLista(numeroIcono:Int):Int
+    {
+        return when(numeroIcono)
+        {
+            1->R.drawable.trophy_gren
+            2->R.drawable.icono_casita
+            3->R.drawable.icono_nube
+            else->R.drawable.trophy_gren
+        }
     }
 }
