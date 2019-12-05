@@ -316,14 +316,14 @@ class AddListFragment : Fragment() {
                     listInvitationsRef.child("state").setValue(null)
                 }
 
-                val roomDatabase = AppDatabase.getAppDatabase(view.context)
+                /*val roomDatabase = AppDatabase.getAppDatabase(view.context)
 
                 val user = roomDatabase.getUsuarioDao().getUsuarioByID(loggedUser)
                 val listToInsert = ListaEntity(listsRef.key!!, loggedUser,
                     listNameEditText.text.toString(), descriptionEditText.text.toString(),
                     loggedUser.toString(), user.username, checkShare.isChecked, selectedIcon, colors[selectedColor])
 
-                roomDatabase.getListaDao().insertList(listToInsert)
+                roomDatabase.getListaDao().insertList(listToInsert)*/
 
                 Toast.makeText(view.context, "Lista Creada Correctamente", Toast.LENGTH_SHORT).show()
             }

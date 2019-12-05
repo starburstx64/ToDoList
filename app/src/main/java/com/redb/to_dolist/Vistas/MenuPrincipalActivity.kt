@@ -2,7 +2,9 @@ package com.redb.to_dolist.Vistas
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.ListActivity
 import android.content.ClipData
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -358,6 +360,12 @@ class MenuPrincipalActivity : AppCompatActivity() {
             }
 
             R.id.actionbar_edit -> {
+                val toEditListIntent = Intent(this, ActivityList::class.java)
+                toEditListIntent.putExtra("forEdit", true)
+                toEditListIntent.putExtra("idList", "12345")
+
+                startActivity(toEditListIntent)
+
                 true
             }
 
@@ -382,5 +390,11 @@ class MenuPrincipalActivity : AppCompatActivity() {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        finishAffinity()
     }
 }
