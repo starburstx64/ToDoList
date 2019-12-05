@@ -3,6 +3,7 @@ package com.redb.to_dolist.Modelos
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.redb.to_dolist.DB.AppDatabase
+import com.redb.to_dolist.DB.Entidades.UsuarioEntity
 
 data class Usuario(
     val idUsuario: String,
@@ -34,6 +35,18 @@ data class Usuario(
 
 
     }
+
+    companion object{
+        fun LogearUsuario(user:UsuarioEntity,db: AppDatabase){
+            db.getUsuarioDao().deslogearUsuario(user.idUsuario)
+            db.getUsuarioDao().InsertarUsuario(user)
+            db.getAplicacionDao().logearUsuario(user.idUsuario)
+
+        }
+
+    }
+
+
 
 
 }
