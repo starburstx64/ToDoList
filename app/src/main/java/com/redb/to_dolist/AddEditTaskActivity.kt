@@ -21,7 +21,7 @@ class AddEditTaskActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_add_edit_task)
+        setContentView(R.layout.activity_test_actitvity)
 
         addEdit_TextView_Header = findViewById(R.id.addEdit_textView_header)
         addEdit_EditText_Descripcion = findViewById(R.id.addEdit_editText_descripcion)
@@ -70,5 +70,10 @@ class AddEditTaskActivity : FragmentActivity() {
         else {
 
         }
+    }
+
+    fun getCurrentList():String
+    {
+        return "fjdasfj"
     }
 }

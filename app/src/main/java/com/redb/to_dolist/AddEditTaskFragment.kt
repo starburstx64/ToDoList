@@ -128,7 +128,7 @@ class AddEditTaskFragment : Fragment() {
         }
 
 
-        val activeList = (activity as testActitvity).getCurrentList()
+        val activeList = (activity as AddEditTaskActivity).getCurrentList()
 
         addEdit_Button_agregar.setOnClickListener {
 
