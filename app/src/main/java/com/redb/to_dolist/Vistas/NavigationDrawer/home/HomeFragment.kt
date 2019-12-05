@@ -1,5 +1,6 @@
 package com.redb.to_dolist.Vistas.NavigationDrawer.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import com.redb.to_dolist.AddEditTaskActivity
 import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.DB.Entidades.TareaEntity
@@ -26,6 +28,8 @@ import com.redb.to_dolist.R
 import com.redb.to_dolist.VistaModelos.MenuPrincipalVM
 
 class HomeFragment : Fragment() {
+
+    private val database:FirebaseDatabase = FirebaseDatabase.getInstance()
 
     class Adapter(private val fragment: HomeFragment) : RecyclerView.Adapter<Adapter.AdapterViewHolder>() {
 
@@ -59,8 +63,14 @@ class HomeFragment : Fragment() {
                 completedCheckBox.setOnCheckedChangeListener {_, isCheked ->
                     if (isCheked) {
                         fragment.removeTask(layoutPosition)
+                        val db= AppDatabase.getAppDatabase(fragment.activity as Context)
+                        db.getTareaDao().completarTarea(task.idTarea)
+                        fragment.database.getReference("App").child("tasks").child(task.idLista).child(task.idTarea).child("completed").setValue(true)
+
                         Snackbar.make(view, "Tarea Completada", Snackbar.LENGTH_LONG).setAction("Deshacer"
                         ) {
+                            db.getTareaDao().descompletarTarea(task.idTarea)
+                            fragment.database.getReference("App").child("tasks").child(task.idLista).child(task.idTarea).child("completed").setValue(false)
                             fragment.restoreTask()
                         }.show()
                     }

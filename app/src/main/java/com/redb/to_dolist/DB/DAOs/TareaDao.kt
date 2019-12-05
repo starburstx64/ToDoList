@@ -24,16 +24,22 @@ interface TareaDao {
     @Update
     fun ModificarTarea(tarea: TareaEntity)
 
-    @Query("SELECT * FROM Tarea WHERE idLista=:idLista")
+    @Query("SELECT * FROM Tarea WHERE idLista=:idLista AND completed=0")
     fun getTaskFromList(idLista:String):List<TareaEntity>
 
-    @Query("SELECT * FROM Tarea WHERE creator=:idUsuario")
+    @Query("SELECT * FROM Tarea WHERE creator=:idUsuario AND completed=0")
     fun getAllTasks(idUsuario:String):List<TareaEntity>
 
-    @Query("SELECT * FROM Tarea WHERE creator=:idUsuario AND dueDate IS NOT NULL")
+    @Query("SELECT * FROM Tarea WHERE creator=:idUsuario AND dueDate IS NOT NULL AND completed=0")
     fun getPlaneadasTasks(idUsuario:String):List<TareaEntity>
 
-    @Query("SELECT * FROM Tarea WHERE creator=:idUsuario AND importance>0")
+    @Query("SELECT * FROM Tarea WHERE creator=:idUsuario AND importance>0 AND completed=0")
     fun getImportantTasks(idUsuario: String):List<TareaEntity>
+
+    @Query("UPDATE Tarea SET completed=1 WHERE idTarea=:idTarea")
+    fun completarTarea(idTarea:String)
+
+    @Query("UPDATE Tarea SET completed=0 WHERE idTarea=:idTarea")
+    fun descompletarTarea(idTarea:String)
 
 }
