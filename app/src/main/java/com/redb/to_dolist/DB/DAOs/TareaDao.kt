@@ -30,7 +30,7 @@ interface TareaDao {
     @Query("SELECT * FROM Tarea WHERE creator=:idUsuario")
     fun getAllTasks(idUsuario:String):List<TareaEntity>
 
-    @Query("SELECT * FROM Tarea WHERE creator=:idUsuario AND dueDate!=NULL")
+    @Query("SELECT * FROM Tarea WHERE creator=:idUsuario AND dueDate IS NOT NULL")
     fun getPlaneadasTasks(idUsuario:String):List<TareaEntity>
 
     @Query("SELECT * FROM Tarea WHERE creator=:idUsuario AND importance>0")

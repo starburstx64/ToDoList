@@ -153,6 +153,7 @@ class AddListFragment : Fragment() {
     private val colors = listOf("Red", "Blue", "Yellow", "Green")
     private var selectedColor = 0
     private var selectedIcon = 0
+    private lateinit var db:AppDatabase
 
     private lateinit var model : MenuPrincipalVM
 
@@ -172,6 +173,7 @@ class AddListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add_list, container, false)
+        db = AppDatabase.getAppDatabase(activity as Context)
 
         listNameEditText = view.findViewById(R.id.list_edtiText_nameList)
         descriptionEditText = view.findViewById(R.id.list_inputText_description)
@@ -291,12 +293,14 @@ class AddListFragment : Fragment() {
             else {
                 val loggedUser = AppDatabase.getAppDatabase(view.context).getAplicacionDao().getLoggedUser()
 
-                //val listKey = database.getReference("App").child("lists").push().key
+                var listKey:String =""
                 //val listsRef = database.getReference("App").child("lists").child(listKey.toString())
                 val listsRef : DatabaseReference = if ((activity as? ActivityList) != null) {
-                    database.getReference("App").child("lists").child((activity as ActivityList).getCurrentListID())
+                    listKey = db.getAplicacionDao().getAplicationList()
+                    database.getReference("App").child("lists").child(listKey)
                 } else {
-                    database.getReference("App").child("lists").push()
+                    listKey = database.getReference("App").child("lists").push().key.toString()
+                    database.getReference("App").child("lists").child(listKey)
                 }
 
                 listsRef.child("creator").setValue(loggedUser!!)
@@ -307,7 +311,7 @@ class AddListFragment : Fragment() {
                 listsRef.child("listIcon").setValue(selectedIcon)
                 listsRef.child("users").child(loggedUser).setValue(true)
 
-                val userRef = database.getReference("App").child("users").child(loggedUser).child("lists").child(listKey.toString()).setValue(true)
+                database.getReference("App").child("users").child(loggedUser).child("lists").child(listKey.toString()).setValue(true)
 
                 val userInvitationsRef = database.getReference("App").child("userInvitations")
                 userList.forEach {

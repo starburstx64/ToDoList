@@ -13,6 +13,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -82,22 +83,24 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
         menu.findItem(R.id.nav_button_sync).setOnMenuItemClickListener {
             //tvUserName.setText("probando sincronizacion")
-
             true
         }
         menu.findItem(R.id.nav_button_all).setOnMenuItemClickListener {
             model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
             navController.navigate(R.id.nav_home)
+            drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
         menu.findItem(R.id.nav_button_planing).setOnMenuItemClickListener {
             model.setCurrentTaskList(db.getTareaDao().getPlaneadasTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
             navController.navigate(R.id.nav_home)
+            drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
-        menu.findItem(R.id.nav_button_planing).setOnMenuItemClickListener {
+        menu.findItem(R.id.nav_button_important).setOnMenuItemClickListener {
             model.setCurrentTaskList(db.getTareaDao().getImportantTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
             navController.navigate(R.id.nav_home)
+            drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
 
@@ -208,6 +211,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                     model.setCurrentTaskList(db.getTareaDao().getTaskFromList(currentList.id.toString()) as MutableList<TareaEntity>)
                                     navController.navigate(R.id.nav_home)
                                     db.getAplicacionDao().setearLista(currentList.id.toString())
+                                    drawerLayout.closeDrawer(GravityCompat.START)
                                     model.databaseRoom=db
                                     true
                                 }
@@ -219,6 +223,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                     model.setCurrentTaskList(db.getTareaDao().getTaskFromList(currentList.id.toString()) as MutableList<TareaEntity>)
                                     navController.navigate(R.id.nav_home)
                                     db.getAplicacionDao().setearLista(currentList.id.toString())
+                                    drawerLayout.closeDrawer(GravityCompat.START)
                                     true
                                 }
                             }

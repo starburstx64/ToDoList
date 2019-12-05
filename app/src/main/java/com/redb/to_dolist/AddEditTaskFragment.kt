@@ -164,7 +164,7 @@ class AddEditTaskFragment : Fragment() {
             }
 
             // calendar.set(year, month, day)
-            val date = year.toString() + mes + dia
+            val date = (year.toString() + mes + dia).toInt()
             val database = FirebaseDatabase.getInstance()
 
             if (addEdit_EditText_Nombre.text.isBlank()) {
@@ -178,10 +178,10 @@ class AddEditTaskFragment : Fragment() {
                 ).show()
 
             } else {
-                /*val taskRef : DatabaseReference
+                //val taskRef : DatabaseReference
                 val listid=db.getAplicacionDao().getAplicationList()
 
-                if ((activity as AddEditTaskActivity).forEdit()) {
+                /*if ((activity as AddEditTaskActivity).forEdit()) {
                     taskRef = database.getReference("App").child("tasks").child(listid).child((activity as AddEditTaskActivity).getCurrentTaskID())
                 }
 
@@ -190,15 +190,15 @@ class AddEditTaskFragment : Fragment() {
                     taskRef = database.getReference("App").child("tasks").child(listid).push()*/
 
                 val taskRef : DatabaseReference = if ((activity as? AddEditTaskActivity) != null) {
-                    database.getReference("App").child("tasks").child(activeList).child((activity as AddEditTaskActivity).getCurrentTaskID())
+                    database.getReference("App").child("tasks").child(listid).push()
                 } else {
-                    database.getReference("App").child("tasks").child(activeList).push()
+                    database.getReference("App").child("tasks").child(listid).child((activity as AddEditTaskActivity).getCurrentTaskID())
                 }
 
                 if (!addEdit_CheckBox_AceptarFecha.isChecked) {
-                    taskRef.child("duedate").setValue("0")
+                    taskRef.child("duedate").setValue(null)
                 } else {
-                    taskRef.child("duedate").setValue(date.toString())
+                    taskRef.child("duedate").setValue(date)
 
                 }
 

@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
             private var descriptionTextView = view.findViewById<TextView>(R.id.task_textView_description)
 
             fun bind(task : TareaEntity) {
-                personPhoto.setImageResource(task.creatorIcon)
+                //personPhoto.setImageResource(task.creatorIcon)
                 tituloTextView.text = task.title
                 importanceTextView.text = view.resources.getString(R.string.task_importance, task.importance)
                 dueDateTextView.text = view.resources.getString(R.string.task_dueDate, task.dueDate)

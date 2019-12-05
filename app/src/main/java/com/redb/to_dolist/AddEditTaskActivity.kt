@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.FragmentActivity
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.redb.to_dolist.DB.AppDatabase
+import kotlinx.android.synthetic.main.fragment_add_edit_task.*
 
 class AddEditTaskActivity : FragmentActivity() {
 
@@ -68,6 +71,61 @@ class AddEditTaskActivity : FragmentActivity() {
             }
 
             addEdit_Button_agregar.text = "Editar Tarea"
+            addEdit_Button_agregar.setOnClickListener{
+
+                //Modificar la tarea en firebase
+                val database = FirebaseDatabase.getInstance()
+                val db:AppDatabase= AppDatabase.getAppDatabase(this)
+                val listid=db.getAplicacionDao().getAplicationList()
+
+                val taskRef= database.getReference("App").child("tasks").child(listid).child(idTask)
+
+                val año = addEdit_DatePicker_fecha.year
+                val mes =
+                    if (addEdit_DatePicker_fecha.month.toString().length==1)
+                        "0"+ addEdit_DatePicker_fecha.month.toString()
+                    else addEdit_DatePicker_fecha.month.toString()
+                val dia =
+                    if (addEdit_DatePicker_fecha.dayOfMonth.toString().length==1)
+                        "0"+ addEdit_DatePicker_fecha.month.toString()
+                    else addEdit_DatePicker_fecha.dayOfMonth.toString()
+                val date = (año.toString() + mes + dia).toInt()
+                if (!addEdit_CheckBox_AceptarFecha.isChecked) {
+                    taskRef.child("duedate").setValue(null)
+                    currentTask.dueDate=null
+                } else {
+                    taskRef.child("duedate").setValue(date)
+                    currentTask.dueDate=date
+                }
+
+                if (addEdit_EditText_Descripcion.text.isBlank()) {
+                    taskRef.child("description").setValue("Sin Descripción")
+                    currentTask.descrition="Sin descripcion"
+                } else {
+                    taskRef.child("description")
+                        .setValue(addEdit_EditText_Descripcion.text.toString())
+                    currentTask.descrition=addEdit_EditText_Descripcion.text.toString()
+                }
+
+                taskRef.child("completed").setValue(false)
+                taskRef.child("title").setValue(addEdit_EditText_Nombre.text.toString())
+                currentTask.title=addEdit_EditText_Nombre.text.toString()
+                var importancia =
+                    when
+                    {
+                        addEdit_RadioButton_Bajo.isChecked->1
+                        addEdit_RadioButton_Medio.isChecked->2
+                        addEdit_RadioButton_Alto.isChecked->3
+                        else -> 0
+                    }
+                currentTask.importance=importancia
+                taskRef.child("importance").setValue(currentTask.importance)
+
+                db.getTareaDao().ModificarTarea(currentTask)
+
+                Toast.makeText(this, "La tarea ha sido modificada", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 
