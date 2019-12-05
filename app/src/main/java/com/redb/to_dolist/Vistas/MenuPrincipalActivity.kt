@@ -81,6 +81,8 @@ class MenuPrincipalActivity : AppCompatActivity() {
         val menu = navView.menu
         val usuarioActual=db.getAplicacionDao().getLoggedUser()
 
+        CargarTareasListaActual()
+
         menu.findItem(R.id.nav_button_sync).setOnMenuItemClickListener {
             //tvUserName.setText("probando sincronizacion")
             true
@@ -89,18 +91,21 @@ class MenuPrincipalActivity : AppCompatActivity() {
             model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
             navController.navigate(R.id.nav_home)
             drawerLayout.closeDrawer(GravityCompat.START)
+            db.getAplicacionDao().setearLista("Todas")
             true
         }
         menu.findItem(R.id.nav_button_planing).setOnMenuItemClickListener {
             model.setCurrentTaskList(db.getTareaDao().getPlaneadasTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
             navController.navigate(R.id.nav_home)
             drawerLayout.closeDrawer(GravityCompat.START)
+            db.getAplicacionDao().setearLista("Planeadas")
             true
         }
         menu.findItem(R.id.nav_button_important).setOnMenuItemClickListener {
             model.setCurrentTaskList(db.getTareaDao().getImportantTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
             navController.navigate(R.id.nav_home)
             drawerLayout.closeDrawer(GravityCompat.START)
+            db.getAplicacionDao().setearLista("Importantes")
             true
         }
 
@@ -381,6 +386,21 @@ class MenuPrincipalActivity : AppCompatActivity() {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    fun CargarTareasListaActual()
+    {
+        var listaActual = db.getAplicacionDao().getAplicationList()
+        var usuarioActual= db.getAplicacionDao().getLoggedUser()
+        when(listaActual)
+        {
+            null->model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
+            "Todas"->model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
+            "Planeadas"->model.setCurrentTaskList(db.getTareaDao().getPlaneadasTasks(usuarioActual.toString()).toMutableList())
+            "Importantes"->model.setCurrentTaskList(db.getTareaDao().getImportantTasks(usuarioActual.toString()).toMutableList())
+            else->model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
+        }
+        //model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
     }
 
     override fun onBackPressed() {

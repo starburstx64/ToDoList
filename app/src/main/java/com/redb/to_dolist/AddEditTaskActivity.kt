@@ -53,12 +53,11 @@ class AddEditTaskActivity : FragmentActivity() {
 
             addEdit_EditText_Nombre.setText(currentTask.title, TextView.BufferType.EDITABLE)
             addEdit_EditText_Descripcion.setText(currentTask.descrition, TextView.BufferType.EDITABLE)
-            addEdit_CheckBox_AceptarFecha.isChecked = currentTask.dueDate != 0
-            val year = currentTask.dueDate.toString().substring(0, 4).toInt()
-            val month = currentTask.dueDate.toString().substring(4, 6).toInt()
-            val day = currentTask.dueDate.toString().substring(6, 8).toInt()
-
-            if (year + month + day > 0) {
+            addEdit_CheckBox_AceptarFecha.isChecked = currentTask.dueDate != null
+            if(currentTask.dueDate !=null) {
+                val year = currentTask.dueDate.toString().substring(0, 4).toInt()
+                val month = currentTask.dueDate.toString().substring(4, 6).toInt()
+                val day = currentTask.dueDate.toString().substring(6, 8).toInt()
                 addEdit_DatePicker_fecha.visibility = View.VISIBLE
                 addEdit_DatePicker_fecha.updateDate(year, month, day)
             }
@@ -76,7 +75,7 @@ class AddEditTaskActivity : FragmentActivity() {
                 //Modificar la tarea en firebase
                 val database = FirebaseDatabase.getInstance()
                 val db:AppDatabase= AppDatabase.getAppDatabase(this)
-                val listid=db.getAplicacionDao().getAplicationList()
+                val listid=currentTask.idLista
 
                 val taskRef= database.getReference("App").child("tasks").child(listid).child(idTask)
 
