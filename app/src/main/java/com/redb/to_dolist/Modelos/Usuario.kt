@@ -44,6 +44,11 @@ data class Usuario(
 
         }
 
+        fun DeslogearUsuario(idUsuario: String,db:AppDatabase)
+        {
+            db.getUsuarioDao().deslogearUsuario(idUsuario)
+        }
+
     }
 
 

@@ -100,6 +100,7 @@ class LoginActivity : AppCompatActivity() {
                         )
 
                         Usuario.LogearUsuario(UserIniciarSesion, db)
+                        db.getAplicacionDao().setearLista("Todas")
                         val intent = Intent(this@LoginActivity, MenuPrincipalActivity::class.java)
                         startActivity(intent)
                     }
@@ -111,4 +112,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
 }

@@ -30,6 +30,7 @@ import com.redb.to_dolist.DB.Entidades.TareaEntity
 import com.redb.to_dolist.Modelos.FBModels.ListFB
 import com.redb.to_dolist.Modelos.FBModels.Task
 import com.redb.to_dolist.Modelos.FBModels.User
+import com.redb.to_dolist.Modelos.Usuario
 import com.redb.to_dolist.VistaModelos.MenuPrincipalVM
 import com.redb.to_dolist.R
 
@@ -82,7 +83,6 @@ class MenuPrincipalActivity : AppCompatActivity() {
         val menu = navView.menu
         val usuarioActual=db.getAplicacionDao().getLoggedUser()
 
-        CargarTareasListaActual()
 
         menu.findItem(R.id.nav_button_sync).setOnMenuItemClickListener {
             //tvUserName.setText("probando sincronizacion")
@@ -107,6 +107,13 @@ class MenuPrincipalActivity : AppCompatActivity() {
             navController.navigate(R.id.nav_home)
             drawerLayout.closeDrawer(GravityCompat.START)
             db.getAplicacionDao().setearLista("Importantes")
+            true
+        }
+        menu.findItem(R.id.nav_button_closeSession).setOnMenuItemClickListener {
+            val usuariologeado=db.getAplicacionDao().getLoggedUser()
+            Usuario.DeslogearUsuario(usuariologeado.toString(),db)
+            val intent = Intent(this@MenuPrincipalActivity, LoginActivity::class.java)
+            startActivity(intent)
             true
         }
 
@@ -233,88 +240,85 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                     true
                                 }
                             }
-                        }
-                    })
-                }
+                            val tasksReference= database.getReference("App").child("tasks").child(idLista)
+                            tasksReference.addChildEventListener(object : ChildEventListener{
+                                override fun onCancelled(p0: DatabaseError) {
+                                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                                }
 
-                for (idLista in idsListas)
-                {
-                    val tasksReference= database.getReference("App").child("tasks").child(idLista)
-                    tasksReference.addChildEventListener(object : ChildEventListener{
-                        override fun onCancelled(p0: DatabaseError) {
-                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                        }
+                                override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+                                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                                }
 
-                        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                        }
+                                override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+                                    val currentTask:Task?=p0.getValue(Task::class.java)
+                                    currentTask!!.id=p0.key
 
-                        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                            val currentTask:Task?=p0.getValue(Task::class.java)
-                            currentTask!!.id=p0.key
+                                    var TareaModificar:TareaEntity=TareaEntity(
+                                        currentTask.id.toString(),
+                                        idLista,
+                                        currentTask.title,
+                                        currentTask.importance,
+                                        currentTask.duedate,
+                                        currentTask.completed,
+                                        currentTask.creator,
+                                        currentTask.creatorName,
+                                        currentTask.creatorIcon,
+                                        currentTask.description
+                                    )
+                                    db.getTareaDao().ModificarTarea(TareaModificar)
+                                }
 
-                            var TareaModificar:TareaEntity=TareaEntity(
-                                currentTask.id.toString(),
-                                idLista,
-                                currentTask.title,
-                                currentTask.importance,
-                                currentTask.duedate,
-                                currentTask.completed,
-                                currentTask.creator,
-                                currentTask.creatorName,
-                                currentTask.creatorIcon,
-                                currentTask.description
-                            )
-                            db.getTareaDao().ModificarTarea(TareaModificar)
-                        }
+                                override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                                    val currentTask:Task?=p0.getValue(Task::class.java)
+                                    currentTask!!.id=p0.key
 
-                        override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                            val currentTask:Task?=p0.getValue(Task::class.java)
-                            currentTask!!.id=p0.key
+                                    if(db.getTareaDao().BuscarTarea(currentTask.id.toString()).isEmpty())
+                                    {
+                                        var TareaInsertar:TareaEntity=TareaEntity(
+                                            currentTask.id.toString(),
+                                            idLista,
+                                            currentTask.title,
+                                            currentTask.importance,
+                                            currentTask.duedate,
+                                            currentTask.completed,
+                                            currentTask.creator,
+                                            currentTask.creatorName,
+                                            currentTask.creatorIcon,
+                                            currentTask.description
+                                        )
 
-                            if(db.getTareaDao().BuscarTarea(currentTask.id.toString()).isEmpty())
-                            {
-                                var TareaInsertar:TareaEntity=TareaEntity(
-                                    currentTask.id.toString(),
-                                    idLista,
-                                    currentTask.title,
-                                    currentTask.importance,
-                                    currentTask.duedate,
-                                    currentTask.completed,
-                                    currentTask.creator,
-                                    currentTask.creatorName,
-                                    currentTask.creatorIcon,
-                                    currentTask.description
-                                )
+                                        db.getTareaDao().InsertarTarea(TareaInsertar)
+                                    }
+                                    CargarTareasListaActual()
+                                }
 
-                                db.getTareaDao().InsertarTarea(TareaInsertar)
-                            }
-                        }
+                                override fun onChildRemoved(p0: DataSnapshot) {
+                                    val currentTask:Task?=p0.getValue(Task::class.java)
+                                    currentTask!!.id=p0.key
 
-                        override fun onChildRemoved(p0: DataSnapshot) {
-                            val currentTask:Task?=p0.getValue(Task::class.java)
-                            currentTask!!.id=p0.key
+                                    var TareaBorrar:TareaEntity=TareaEntity(
+                                        currentTask.id.toString(),
+                                        idLista,
+                                        currentTask.title,
+                                        currentTask.importance,
+                                        currentTask.duedate,
+                                        currentTask.completed,
+                                        currentTask.creator,
+                                        currentTask.creatorName,
+                                        currentTask.creatorIcon,
+                                        currentTask.description
+                                    )
 
-                            var TareaBorrar:TareaEntity=TareaEntity(
-                                currentTask.id.toString(),
-                                idLista,
-                                currentTask.title,
-                                currentTask.importance,
-                                currentTask.duedate,
-                                currentTask.completed,
-                                currentTask.creator,
-                                currentTask.creatorName,
-                                currentTask.creatorIcon,
-                                currentTask.description
-                            )
-
-                            db.getTareaDao().BorrarTarea(TareaBorrar)
+                                    db.getTareaDao().BorrarTarea(TareaBorrar)
+                                }
+                            })
                         }
                     })
                 }
             }
         })
-
+        CargarTareasListaActual()
         navView.invalidate()
     }
 
