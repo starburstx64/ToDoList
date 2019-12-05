@@ -19,6 +19,9 @@ class AddEditTaskActivity : FragmentActivity() {
     lateinit var addEdit_CheckBox_AceptarFecha: CheckBox
     lateinit var addEdit_Button_agregar: Button
 
+    private var forEdit = false
+    private lateinit var idTask : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_actitvity)
@@ -39,10 +42,10 @@ class AddEditTaskActivity : FragmentActivity() {
         addEdit_DatePicker_fecha = findViewById(R.id.addEdit_datePicker_fecha)
         addEdit_Button_agregar = findViewById(R.id.addEdit_btn_agregar)
 
-        val forEdit = intent.getBooleanExtra("forEdit", false)
+        forEdit = intent.getBooleanExtra("forEdit", false)
 
         if (forEdit) {
-            val idTask = intent.getStringExtra("idTask")
+            idTask = intent.getStringExtra("idTask")!!
             val currentTask = AppDatabase.getAppDatabase(this).getTareaDao().getTareaByID(idTask!!)
 
             addEdit_EditText_Nombre.setText(currentTask.title, TextView.BufferType.EDITABLE)
@@ -66,10 +69,14 @@ class AddEditTaskActivity : FragmentActivity() {
 
             addEdit_Button_agregar.text = "Editar Tarea"
         }
+    }
 
-        else {
+    fun forEdit() : Boolean {
+        return forEdit
+    }
 
-        }
+    fun getCurrentTaskID() : String {
+        return idTask
     }
 
     fun getCurrentList():String

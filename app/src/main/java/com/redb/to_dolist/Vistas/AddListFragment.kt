@@ -329,6 +329,10 @@ class AddListFragment : Fragment() {
             }
         }
 
+        cancelButton.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
         return view
     }
 

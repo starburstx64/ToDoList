@@ -3,7 +3,6 @@ package com.redb.to_dolist.Vistas
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ClipData
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -21,10 +20,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.facebook.stetho.Stetho
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.*
 import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.DB.Entidades.ListaEntity
@@ -32,9 +27,8 @@ import com.redb.to_dolist.DB.Entidades.TareaEntity
 import com.redb.to_dolist.Modelos.FBModels.ListFB
 import com.redb.to_dolist.Modelos.FBModels.Task
 import com.redb.to_dolist.Modelos.FBModels.User
-import com.redb.to_dolist.Modelos.Lista
-import com.redb.to_dolist.R
 import com.redb.to_dolist.VistaModelos.MenuPrincipalVM
+import com.redb.to_dolist.R
 
 class MenuPrincipalActivity : AppCompatActivity() {
 
@@ -346,7 +340,6 @@ class MenuPrincipalActivity : AppCompatActivity() {
             }
 
             R.id.actionbar_edit -> {
-                // Abrir editar lista
                 true
             }
 

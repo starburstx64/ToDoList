@@ -8,12 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.isGone
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.FirebaseDatabase
 import com.redb.to_dolist.DB.AppDatabase
-import java.util.*
-import android.view.ViewParent
-import android.view.MotionEvent
+import com.google.firebase.database.DatabaseReference
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -169,7 +167,15 @@ class AddEditTaskFragment : Fragment() {
                 ).show()
 
             } else {
-                val taskRef = database.getReference("App").child("tasks").child(activeList).push()
+                val taskRef : DatabaseReference
+
+                if ((activity as AddEditTaskActivity).forEdit()) {
+                    taskRef = database.getReference("App").child("tasks").child(activeList).child((activity as AddEditTaskActivity).getCurrentTaskID())
+                }
+
+                else {
+                    taskRef = database.getReference("App").child("tasks").child(activeList).push()
+                }
 
                 if (!addEdit_CheckBox_AceptarFecha.isChecked) {
                     taskRef.child("duedate").setValue("0")
@@ -193,9 +199,10 @@ class AddEditTaskFragment : Fragment() {
 
                 Toast.makeText(view.context, "La tarea ha sido agregada con exito", Toast.LENGTH_SHORT)
                     .show()
+
+                (activity as AppCompatActivity).finish()
             }
         }
-
 
         return view
 
