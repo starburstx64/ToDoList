@@ -321,7 +321,7 @@ class AddListFragment : Fragment() {
                     invitationRef.child("idList").setValue(listsRef.key)
                     invitationRef.child("listTitle").setValue(listNameEditText.text.toString())
 
-                    val listInvitationsRef = database.getReference("App").child("listInvitations").child(listsRef.key!!).push()
+                    val listInvitationsRef = database.getReference("App").child("listInvitations").child(listsRef.key!!).child(invitationRef.key!!)
                     listInvitationsRef.child("idUser").setValue(it.idUsuario)
                     listInvitationsRef.child("userEmail").setValue(it.email)
                     listInvitationsRef.child("state").setValue(null)
