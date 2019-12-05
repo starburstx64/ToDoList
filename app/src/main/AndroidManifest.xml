@@ -16,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".testActitvity">
+        </activity>
         <activity android:name=".AddEditTaskActivity" />
         <activity android:name=".Vistas.ActivityList" />
         <activity android:name=".Vistas.RegistrarActivity"/>

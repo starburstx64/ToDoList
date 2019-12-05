@@ -50,9 +50,12 @@ class MenuPrincipalVM : ViewModel() {
         if (sortByDueDate) {
             taskList.value!!.sortWith(object : Comparator<TareaEntity> {
                 override fun compare(p0: TareaEntity?, p1: TareaEntity?): Int {
+
+                    if (p0!!.dueDate == null && p1!!.dueDate != null) return 1
+                    if (p0.dueDate != null && p1!!.dueDate == null) return -1
+
                     return when {
-                        p0!!.dueDate > p1!!.dueDate -> 1
-                        p0.dueDate == p1.dueDate -> 0
+                        p0.dueDate == p1!!.dueDate -> 0
                         else -> -1
                     }
                 }
