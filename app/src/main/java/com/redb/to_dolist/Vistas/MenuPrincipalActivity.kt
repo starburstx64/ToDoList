@@ -382,16 +382,44 @@ class MenuPrincipalActivity : AppCompatActivity() {
                     val usuarioActual = db.getUsuarioDao().getUsuarioByID(db.getAplicacionDao().getLoggedUser().toString())
                     val listaActual = db.getListaDao().getListByID(db.getAplicacionDao().getAplicationList())
                     if (usuarioActual.idUsuario==listaActual.idUsuario) {
+
                         val listInvitationsReference = database.getReference("App").child("listInvitations").child(listaActual.idLista)
                         listInvitationsReference.addListenerForSingleValueEvent(object : ValueEventListener{
                             override fun onDataChange(p0: DataSnapshot) {
-                                p0.children.forEach{
-                                    val actualList:TaskInvitation? = it.getValue(TaskInvitation::class.java)
-                                    val userInvitacionReference =database.getReference("App").child("userInvitacions").child(actualList!!.idUser).child(it.key.toString()).setValue(null)
-
+                                if(p0.exists()) {
+                                    p0.children.forEach {
+                                        val actualList: TaskInvitation? =
+                                            it.getValue(TaskInvitation::class.java)
+                                        val userInvitacionReference =
+                                            database.getReference("App").child("userInvitacions")
+                                                .child(actualList!!.idUser).child(it.key.toString())
+                                                .setValue(null)
+                                    }
                                 }
                             }
 
+                            override fun onCancelled(p0: DatabaseError) {
+                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                            }
+                        })
+                        val listReference =database.getReference("App").child("lists").child(listaActual.idLista)
+                        listReference.addListenerForSingleValueEvent(object : ValueEventListener{
+                            override fun onDataChange(p0: DataSnapshot) {
+                                if(p0.exists()) {
+                                        val actualList: ListFB? =
+                                            p0.getValue(ListFB::class.java)
+                                        actualList!!.id=p0.key
+                                        database.getReference("App").child("listInvitations").child(p0.key.toString()).setValue(null)
+                                        database.getReference("App").child("tasks").child(p0.key.toString()).setValue(null)
+
+                                        actualList?.users?.forEach{
+                                            database.getReference("App").child("users")
+                                                .child(it.key).child("lists")
+                                                .child(actualList.id.toString()).setValue(null)
+                                        }
+                                        database.getReference("App").child("lists").child(p0.key.toString()).setValue(null)
+                                }
+                            }
                             override fun onCancelled(p0: DatabaseError) {
                                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                             }
