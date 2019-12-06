@@ -406,9 +406,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
         val userInvitationRef = fbDatabase.getReference("App").child("userInvitations").child(loggedUser).child(id)
 
         userInvitationRef.child("accepted").setValue(accepted)
-
-        val listInvitationRef = fbDatabase.getReference("App").child("listInvitations").child(idList).child(id)
-        listInvitationRef.child("state").setValue(accepted)
+        fbDatabase.getReference("App").child("listInvitations").child(idList).child(id).child("state").setValue(true)
     }
 
     override fun onBackPressed() {

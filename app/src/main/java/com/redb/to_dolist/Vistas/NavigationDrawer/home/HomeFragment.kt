@@ -45,14 +45,28 @@ class HomeFragment : Fragment() {
             private var descriptionTextView = view.findViewById<TextView>(R.id.task_textView_description)
 
             fun bind(task : TareaEntity) {
-                //personPhoto.setImageResource(task.creatorIcon)
-                val year = task.dueDate.toString().substring(0, 4)
-                val month = task.dueDate.toString().substring(4, 6)
-                val day = task.dueDate.toString().substring(6, 8)
+                val fotos = arrayOf(
+                    R.drawable.foto_01,
+                    R.drawable.foto_02,
+                    R.drawable.foto_03,
+                    R.drawable.foto_04,
+                    R.drawable.foto_05,
+                    R.drawable.foto_06,
+                    R.drawable.foto_07,
+                    R.drawable.foto_08,
+                    R.drawable.foto_09,
+                    R.drawable.foto_10,
+                    R.drawable.foto_11
+                )
+
+                personPhoto.setImageResource(fotos[task.creatorIcon])
+//                val year = task.dueDate.toString().substring(0, 4)
+//                val month = task.dueDate.toString().substring(4, 6)
+//                val day = task.dueDate.toString().substring(6, 8)
 
                 tituloTextView.text = task.title
                 importanceTextView.text = view.resources.getString(R.string.task_importance, task.importance)
-                dueDateTextView.text = view.resources.getString(R.string.task_dueDate, year, month, day)
+//                dueDateTextView.text = view.resources.getString(R.string.task_dueDate, year, month, day)
                 completedCheckBox.isChecked = task.completed
                 userNameTextView.text = task.creatorName
                 descriptionTextView.text = task.descrition

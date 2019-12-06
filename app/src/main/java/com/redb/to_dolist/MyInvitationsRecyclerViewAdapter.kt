@@ -57,7 +57,7 @@ class MyInvitationsRecyclerViewAdapter(
         }
     }
 
-    fun removeInvitation(position: Int) {
+    private fun removeInvitation(position: Int) {
         mRows.removeAt(position)
         notifyDataSetChanged()
     }
