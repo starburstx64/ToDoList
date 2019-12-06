@@ -71,31 +71,34 @@ class InvitationsFragment : Fragment() {
                     val id = it.key.toString()
                     val idList = it.child("idList").value.toString()
                     val listTitle = it.child("listTitle").value.toString()
-                    var idCreator = String()
-                    var userName = String()
-                    fbDatabase.getReference("App").child("lists").child(idList).child("creator").addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(p0: DataSnapshot) {
-                            idCreator = p0.value.toString()
+                    var idCreator: String
+                    var userName : String
 
-                            fbDatabase.getReference("App").child("users").child(idCreator).child("username").addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onDataChange(p0: DataSnapshot) {
-                                    userName = p0.value.toString()
-                                    invitationsRows.add(InvitationRow(id, idList, listTitle, userName))
-                                    with(view as RecyclerView) {
-                                        (adapter as MyInvitationsRecyclerViewAdapter).setData(invitationsRows)
+                    if (!it.hasChild("accepted")) {
+                        fbDatabase.getReference("App").child("lists").child(idList).child("creator").addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(p0: DataSnapshot) {
+                                idCreator = p0.value.toString()
+
+                                fbDatabase.getReference("App").child("users").child(idCreator).child("username").addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(p0: DataSnapshot) {
+                                        userName = p0.value.toString()
+                                        invitationsRows.add(InvitationRow(id, idList, listTitle, userName))
+                                        with(view as RecyclerView) {
+                                            (adapter as MyInvitationsRecyclerViewAdapter).setData(invitationsRows)
+                                        }
                                     }
-                                }
 
-                                override fun onCancelled(p0: DatabaseError) {
+                                    override fun onCancelled(p0: DatabaseError) {
 
-                                }
-                            })
-                        }
+                                    }
+                                })
+                            }
 
-                        override fun onCancelled(p0: DatabaseError) {
+                            override fun onCancelled(p0: DatabaseError) {
 
-                        }
-                    })
+                            }
+                        })
+                    }
                 }
 
 

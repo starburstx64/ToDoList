@@ -22,12 +22,12 @@ import kotlinx.android.synthetic.main.rv_list_name_holder.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class MyInvitationsRecyclerViewAdapter(
-    private var mRows: List<InvitationsFragment.InvitationRow>,
+    private var mRows: MutableList<InvitationsFragment.InvitationRow>,
     private val mListener: OnListFragmentInteractionListener?,
     private val activity: MenuPrincipalActivity
 ) : RecyclerView.Adapter<MyInvitationsRecyclerViewAdapter.ViewHolder>() {
 
-    fun setData(newList : List<InvitationsFragment.InvitationRow>) {
+    fun setData(newList : MutableList<InvitationsFragment.InvitationRow>) {
         mRows = newList
         if (newList.isNotEmpty()) notifyDataSetChanged()
     }
@@ -46,13 +46,20 @@ class MyInvitationsRecyclerViewAdapter(
         with(holder.mView) {
             tag = item
             findViewById<ImageButton>(R.id.invitation_button_confirmar).setOnClickListener {
-                activity.handleInvitation(mRows[position].idInvitation, true)
+                activity.handleInvitation(mRows[position].idInvitation, mRows[position].idList, true)
+                removeInvitation(position)
             }
 
             findViewById<ImageButton>(R.id.invitation_button_cancelar).setOnClickListener {
-                activity.handleInvitation(mRows[position].idInvitation,false)
+                activity.handleInvitation(mRows[position].idInvitation, mRows[position].idList, false)
+                removeInvitation(position)
             }
         }
+    }
+
+    fun removeInvitation(position: Int) {
+        mRows.removeAt(position)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = mRows.size

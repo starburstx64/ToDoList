@@ -2,11 +2,9 @@ package com.redb.to_dolist.Vistas
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.app.ListActivity
 import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -401,8 +399,16 @@ class MenuPrincipalActivity : AppCompatActivity() {
         //model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
     }
 
-    fun handleInvitation( id : String, acepted : Boolean) {
+    fun handleInvitation(id : String, idList : String, accepted : Boolean) {
+        val fbDatabase = FirebaseDatabase.getInstance()
+        val roomDatabase = AppDatabase.getAppDatabase(this)
+        val loggedUser = roomDatabase.getAplicacionDao().getLoggedUser()!!
+        val userInvitationRef = fbDatabase.getReference("App").child("userInvitations").child(loggedUser).child(id)
 
+        userInvitationRef.child("accepted").setValue(accepted)
+
+        val listInvitationRef = fbDatabase.getReference("App").child("listInvitations").child(idList).child(id)
+        listInvitationRef.child("state").setValue(accepted)
     }
 
     override fun onBackPressed() {
