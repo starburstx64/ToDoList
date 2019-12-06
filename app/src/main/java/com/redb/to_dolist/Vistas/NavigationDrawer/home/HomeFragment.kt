@@ -47,16 +47,19 @@ class HomeFragment : Fragment() {
 
             fun bind(task : TareaEntity) {
                 //personPhoto.setImageResource(task.creatorIcon)
-                val year = task.dueDate.toString().substring(0, 4)
-                val month = task.dueDate.toString().substring(4, 6)
-                val day = task.dueDate.toString().substring(6, 8)
+//                val year = task.dueDate.toString().substring(0, 4)
+//                val month = task.dueDate.toString().substring(4, 6)
+//                val day = task.dueDate.toString().substring(6, 8)
 
                 tituloTextView.text = task.title
-                importanceTextView.text = view.resources.getString(R.string.task_importance, task.importance)
-                dueDateTextView.text = view.resources.getString(R.string.task_dueDate, year, month, day)
                 completedCheckBox.isChecked = task.completed
                 userNameTextView.text = task.creatorName
                 descriptionTextView.text = task.descrition
+                importanceTextView.text = view.resources.getString(R.string.task_importance, task.importance)
+                if (task.dueDate!=null) {
+                    dueDateTextView.text = task.dueDate.toString()
+                }
+
 
                 linearLayoutRoot.setOnClickListener {
                     val toEditTaskActivity = Intent(fragment.activity, AddEditTaskActivity::class.java)
@@ -133,11 +136,12 @@ class HomeFragment : Fragment() {
 
         fab = view.findViewById(R.id.task_floatingActionButton_add)
         val db = AppDatabase.getAppDatabase(view.context)
-        val listaActual = db.getAplicacionDao().getAplicationList()
-        when(listaActual)
-        {
-            "Todas","Planeadas","Importantes"->fab.isVisible=false
-            else->fab.isVisible=true
+        val listaActual:String? = db.getAplicacionDao().getAplicationList()
+        if(listaActual!=null) {
+            when (listaActual) {
+                "Todas", "Planeadas", "Importantes" -> fab.isVisible = false
+                else -> fab.isVisible = true
+            }
         }
         fab.setOnClickListener {
             val toAddTaskActivity = Intent(view.context, AddEditTaskActivity::class.java)

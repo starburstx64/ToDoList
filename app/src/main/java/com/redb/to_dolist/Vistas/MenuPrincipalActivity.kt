@@ -88,11 +88,11 @@ class MenuPrincipalActivity : AppCompatActivity() {
         val usuarioActual=db.getAplicacionDao().getLoggedUser()
 
 
-        menu.findItem(R.id.nav_button_sync).setOnMenuItemClickListener {
+        /*menu.findItem(R.id.nav_invitations).setOnMenuItemClickListener {
             navController.navigate(R.id.nav_invitations)
             drawerLayout.closeDrawer(GravityCompat.START)
             true
-        }
+        }*/
         menu.findItem(R.id.nav_button_all).setOnMenuItemClickListener {
             model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
             navController.navigate(R.id.nav_home)
@@ -421,15 +421,24 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
     fun CargarTareasListaActual()
     {
-        var listaActual = db.getAplicacionDao().getAplicationList()
+        var listaActual:String? = db.getAplicacionDao().getAplicationList()
         var usuarioActual= db.getAplicacionDao().getLoggedUser()
-        when(listaActual)
-        {
-            null->model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
-            "Todas"->model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
-            "Planeadas"->model.setCurrentTaskList(db.getTareaDao().getPlaneadasTasks(usuarioActual.toString()).toMutableList())
-            "Importantes"->model.setCurrentTaskList(db.getTareaDao().getImportantTasks(usuarioActual.toString()).toMutableList())
-            else->model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
+        if (listaActual!=null) {
+            when (listaActual) {
+                null -> model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
+                "Todas" -> model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
+                "Planeadas" -> model.setCurrentTaskList(
+                    db.getTareaDao().getPlaneadasTasks(
+                        usuarioActual.toString()
+                    ).toMutableList()
+                )
+                "Importantes" -> model.setCurrentTaskList(
+                    db.getTareaDao().getImportantTasks(
+                        usuarioActual.toString()
+                    ).toMutableList()
+                )
+                else -> model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
+            }
         }
         //model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
     }
