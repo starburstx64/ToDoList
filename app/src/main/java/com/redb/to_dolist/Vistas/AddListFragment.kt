@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.redb.to_dolist.DB.AppDatabase
 import com.redb.to_dolist.DB.Entidades.ListaEntity
+import com.redb.to_dolist.Modelos.FBModels.User
 import com.redb.to_dolist.Modelos.Usuario
 
 import com.redb.to_dolist.R
@@ -212,19 +213,19 @@ class AddListFragment : Fragment() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 selectedIcon = when (p2) {
                     0 -> {
-                        R.drawable.trophy_gren
+                        1
                     }
 
                     1 -> {
-                        R.drawable.trophy_white
+                        2
                     }
 
                     2 -> {
-                        R.drawable.trophy_yellow
+                        3
                     }
 
                     else -> {
-                        R.drawable.trophy_gren
+                        1
                     }
                 }
             }
@@ -241,17 +242,25 @@ class AddListFragment : Fragment() {
         }
 
         addButton.setOnClickListener {
-            database.getReference("App").child("users").addListenerForSingleValueEvent(
+            database.getReference("App").child("users").orderByChild("email").equalTo(userNameEditText.text.toString()).addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(p0: DataSnapshot) {
-                        val text = userNameEditText.text.toString().filterNot { c -> "@.".contains(c) }
+                        val userObtained: User? = p0.getValue(User::class.java)
 
-                        if (text.isNotEmpty() && p0.child(text).exists()) {
-                            val user = p0.child(text)
-                            val userName =  user.child("username").value.toString()
-                            val mail = user.child("email").value.toString()
+                        p0.children.forEach{
+                            userObtained!!.username=it.child("username").value.toString()
+                            userObtained.password=it.child("password").value.toString()
+                            userObtained.id = it.key
+                            userObtained.email=it.child("email").value.toString()
+                            userObtained.selectedAvatar=it.child("selectedAvatar").value.toString().toInt()
+                            userObtained.confirmed=it.child("confirmed").value.toString().toBoolean()
+                        }
 
-                            userList.add(Usuario(text, userName, "asda", 1, mail))
+                        //val text = userNameEditText.text.toString().filterNot { c -> "@.".contains(c) }
+
+                        if (userObtained?.username!="" && p0.exists()) {
+
+                            userList.add(Usuario(userObtained!!.id.toString(),userObtained.username,"",userObtained.selectedAvatar,userObtained.email))
                             userRecycler.adapter?.notifyDataSetChanged()
 
                             userNameEditText.text.clear()

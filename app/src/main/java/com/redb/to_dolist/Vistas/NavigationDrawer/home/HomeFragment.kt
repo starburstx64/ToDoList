@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -45,31 +46,20 @@ class HomeFragment : Fragment() {
             private var descriptionTextView = view.findViewById<TextView>(R.id.task_textView_description)
 
             fun bind(task : TareaEntity) {
-                val fotos = arrayOf(
-                    R.drawable.foto_01,
-                    R.drawable.foto_02,
-                    R.drawable.foto_03,
-                    R.drawable.foto_04,
-                    R.drawable.foto_05,
-                    R.drawable.foto_06,
-                    R.drawable.foto_07,
-                    R.drawable.foto_08,
-                    R.drawable.foto_09,
-                    R.drawable.foto_10,
-                    R.drawable.foto_11
-                )
-
-                personPhoto.setImageResource(fotos[task.creatorIcon])
+                //personPhoto.setImageResource(task.creatorIcon)
 //                val year = task.dueDate.toString().substring(0, 4)
 //                val month = task.dueDate.toString().substring(4, 6)
 //                val day = task.dueDate.toString().substring(6, 8)
 
                 tituloTextView.text = task.title
-                importanceTextView.text = view.resources.getString(R.string.task_importance, task.importance)
-//                dueDateTextView.text = view.resources.getString(R.string.task_dueDate, year, month, day)
                 completedCheckBox.isChecked = task.completed
                 userNameTextView.text = task.creatorName
                 descriptionTextView.text = task.descrition
+                importanceTextView.text = view.resources.getString(R.string.task_importance, task.importance)
+                if (task.dueDate!=null) {
+                    dueDateTextView.text = task.dueDate.toString()
+                }
+
 
                 linearLayoutRoot.setOnClickListener {
                     val toEditTaskActivity = Intent(fragment.activity, AddEditTaskActivity::class.java)
@@ -145,6 +135,14 @@ class HomeFragment : Fragment() {
         actionBar.subtitle = "Hola Rasa"
 
         fab = view.findViewById(R.id.task_floatingActionButton_add)
+        val db = AppDatabase.getAppDatabase(view.context)
+        val listaActual:String? = db.getAplicacionDao().getAplicationList()
+        if(listaActual!=null) {
+            when (listaActual) {
+                "Todas", "Planeadas", "Importantes" -> fab.isVisible = false
+                else -> fab.isVisible = true
+            }
+        }
         fab.setOnClickListener {
             val toAddTaskActivity = Intent(view.context, AddEditTaskActivity::class.java)
             startActivity(toAddTaskActivity)
@@ -165,7 +163,7 @@ class HomeFragment : Fragment() {
         })
 
         val roomDatabase = AppDatabase.getAppDatabase(view.context)
-        val currentList = roomDatabase.getListaDao().getListByID(model.getCurrentListID())
+        val currentList = roomDatabase.getListaDao().getListByID(roomDatabase.getAplicacionDao().getAplicationList())
         taskRoot = view.findViewById(R.id.task_coordinator_root)
 
         if(currentList!=null) {

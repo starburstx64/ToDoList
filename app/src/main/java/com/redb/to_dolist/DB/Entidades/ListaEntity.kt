@@ -3,7 +3,7 @@ package com.redb.to_dolist.DB.Entidades
 import androidx.room.*
 
 @Entity(
-    tableName = "Lista",
+    tableName = "Lista"/*,
     foreignKeys = arrayOf(
         ForeignKey(
             entity = UsuarioEntity::class,
@@ -12,7 +12,7 @@ import androidx.room.*
             onDelete = ForeignKey.CASCADE
         )
     ),
-    indices = [Index("idUsuario")]
+    indices = [Index("idUsuario")]*/
 )
 data class ListaEntity(
     @PrimaryKey @ColumnInfo(name = "idLista") val idLista: String,

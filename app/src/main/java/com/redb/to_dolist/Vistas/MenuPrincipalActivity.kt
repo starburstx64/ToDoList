@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -28,6 +29,7 @@ import com.redb.to_dolist.DB.Entidades.ListaEntity
 import com.redb.to_dolist.DB.Entidades.TareaEntity
 import com.redb.to_dolist.Modelos.FBModels.ListFB
 import com.redb.to_dolist.Modelos.FBModels.Task
+import com.redb.to_dolist.Modelos.FBModels.TaskInvitation
 import com.redb.to_dolist.Modelos.FBModels.User
 import com.redb.to_dolist.Modelos.Usuario
 import com.redb.to_dolist.VistaModelos.MenuPrincipalVM
@@ -84,11 +86,11 @@ class MenuPrincipalActivity : AppCompatActivity() {
         val usuarioActual=db.getAplicacionDao().getLoggedUser()
 
 
-        menu.findItem(R.id.nav_button_sync).setOnMenuItemClickListener {
+        /*menu.findItem(R.id.nav_invitations).setOnMenuItemClickListener {
             navController.navigate(R.id.nav_invitations)
             drawerLayout.closeDrawer(GravityCompat.START)
             true
-        }
+        }*/
         menu.findItem(R.id.nav_button_all).setOnMenuItemClickListener {
             model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()) as MutableList<TareaEntity>)
             navController.navigate(R.id.nav_home)
@@ -228,7 +230,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                     drawerLayout.closeDrawer(GravityCompat.START)
                                     model.databaseRoom=db
                                     true
-                                }
+                                }.setIcon(GetIconoLista(currentList.listIcon))
                             }
                             else
                             {
@@ -239,7 +241,7 @@ class MenuPrincipalActivity : AppCompatActivity() {
                                     db.getAplicacionDao().setearLista(currentList.id.toString())
                                     drawerLayout.closeDrawer(GravityCompat.START)
                                     true
-                                }
+                                }.setIcon(GetIconoLista(currentList.listIcon))
                             }
                             val tasksReference= database.getReference("App").child("tasks").child(idLista)
                             tasksReference.addChildEventListener(object : ChildEventListener{
@@ -352,11 +354,18 @@ class MenuPrincipalActivity : AppCompatActivity() {
             }
 
             R.id.actionbar_edit -> {
-                val toEditListIntent = Intent(this, ActivityList::class.java)
-                toEditListIntent.putExtra("forEdit", true)
-                toEditListIntent.putExtra("idList", "12345") // TODO
-
-                startActivity(toEditListIntent)
+                val usuarioActual = db.getUsuarioDao().getUsuarioByID(db.getAplicacionDao().getLoggedUser().toString())
+                val listaActual = db.getListaDao().getListByID(db.getAplicacionDao().getAplicationList())
+                if (usuarioActual.idUsuario==listaActual.idUsuario) {
+                    val toEditListIntent = Intent(this, ActivityList::class.java)
+                    toEditListIntent.putExtra("forEdit", true)
+                    toEditListIntent.putExtra("idList", db.getAplicacionDao().getAplicationList())
+                    startActivity(toEditListIntent)
+                }
+                else
+                {
+                    Toast.makeText(this,"No tienes permizo de editar esta lista",Toast.LENGTH_LONG).show()
+                }
 
                 true
             }
@@ -367,6 +376,30 @@ class MenuPrincipalActivity : AppCompatActivity() {
                 dialog.setTitle("Confirmar")
                 dialog.setPositiveButton("Si") { _, _ ->
 
+
+                    val usuarioActual = db.getUsuarioDao().getUsuarioByID(db.getAplicacionDao().getLoggedUser().toString())
+                    val listaActual = db.getListaDao().getListByID(db.getAplicacionDao().getAplicationList())
+                    if (usuarioActual.idUsuario==listaActual.idUsuario) {
+                        val listInvitationsReference = database.getReference("App").child("listInvitations").child(listaActual.idLista)
+                        listInvitationsReference.addListenerForSingleValueEvent(object : ValueEventListener{
+                            override fun onDataChange(p0: DataSnapshot) {
+                                p0.children.forEach{
+                                    val actualList:TaskInvitation? = it.getValue(TaskInvitation::class.java)
+                                    val userInvitacionReference =database.getReference("App").child("userInvitacions").child(actualList!!.idUser).child(it.key.toString()).setValue(null)
+
+                                }
+                            }
+
+                            override fun onCancelled(p0: DatabaseError) {
+                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                            }
+                        })
+
+                    }
+                    else
+                    {
+                        Toast.makeText(this,"No tienes permizo de editar esta lista",Toast.LENGTH_LONG).show()
+                    }
                 }
 
                 dialog.setNegativeButton("No") {_, _->
@@ -386,15 +419,24 @@ class MenuPrincipalActivity : AppCompatActivity() {
 
     fun CargarTareasListaActual()
     {
-        var listaActual = db.getAplicacionDao().getAplicationList()
+        var listaActual:String? = db.getAplicacionDao().getAplicationList()
         var usuarioActual= db.getAplicacionDao().getLoggedUser()
-        when(listaActual)
-        {
-            null->model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
-            "Todas"->model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
-            "Planeadas"->model.setCurrentTaskList(db.getTareaDao().getPlaneadasTasks(usuarioActual.toString()).toMutableList())
-            "Importantes"->model.setCurrentTaskList(db.getTareaDao().getImportantTasks(usuarioActual.toString()).toMutableList())
-            else->model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
+        if (listaActual!=null) {
+            when (listaActual) {
+                null -> model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
+                "Todas" -> model.setCurrentTaskList(db.getTareaDao().getAllTasks(usuarioActual.toString()).toMutableList())
+                "Planeadas" -> model.setCurrentTaskList(
+                    db.getTareaDao().getPlaneadasTasks(
+                        usuarioActual.toString()
+                    ).toMutableList()
+                )
+                "Importantes" -> model.setCurrentTaskList(
+                    db.getTareaDao().getImportantTasks(
+                        usuarioActual.toString()
+                    ).toMutableList()
+                )
+                else -> model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
+            }
         }
         //model.setCurrentTaskList(db.getTareaDao().getTaskFromList(listaActual).toMutableList())
     }
@@ -406,12 +448,27 @@ class MenuPrincipalActivity : AppCompatActivity() {
         val userInvitationRef = fbDatabase.getReference("App").child("userInvitations").child(loggedUser).child(id)
 
         userInvitationRef.child("accepted").setValue(accepted)
-        fbDatabase.getReference("App").child("listInvitations").child(idList).child(id).child("state").setValue(true)
+        fbDatabase.getReference("App").child("listInvitations").child(idList).child(id).child("state").setValue(accepted)
+
+        if (accepted) {
+            fbDatabase.getReference("App").child("users").child(loggedUser).child("lists").child(idList).setValue(true)
+        }
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
 
         finishAffinity()
+    }
+
+    fun GetIconoLista(numeroIcono:Int):Int
+    {
+        return when(numeroIcono)
+        {
+            1->R.drawable.trophy_gren
+            2->R.drawable.icono_casita
+            3->R.drawable.icono_nube
+            else->R.drawable.trophy_gren
+        }
     }
 }

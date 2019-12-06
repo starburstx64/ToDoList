@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6b6d6f25aa23eeaa4a43da1c188a7de5",
+    "identityHash": "e4afa3d054cf40af21569d0ac89d3c9e",
     "entities": [
       {
         "tableName": "Aplicacion",
@@ -124,7 +124,7 @@
       },
       {
         "tableName": "Lista",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idLista` TEXT NOT NULL, `idUsuario` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `shared` INTEGER NOT NULL, `listIcon` INTEGER NOT NULL, `backgroudColor` TEXT NOT NULL, PRIMARY KEY(`idLista`), FOREIGN KEY(`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idLista` TEXT NOT NULL, `idUsuario` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `creator` TEXT NOT NULL, `creatorName` TEXT NOT NULL, `shared` INTEGER NOT NULL, `listIcon` INTEGER NOT NULL, `backgroudColor` TEXT NOT NULL, PRIMARY KEY(`idLista`))",
         "fields": [
           {
             "fieldPath": "idLista",
@@ -187,29 +187,8 @@
           ],
           "autoGenerate": false
         },
-        "indices": [
-          {
-            "name": "index_Lista_idUsuario",
-            "unique": false,
-            "columnNames": [
-              "idUsuario"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_Lista_idUsuario` ON `${TABLE_NAME}` (`idUsuario`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "Usuario",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "idUsuario"
-            ],
-            "referencedColumns": [
-              "idUsuario"
-            ]
-          }
-        ]
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "Tarea",
@@ -354,7 +333,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6b6d6f25aa23eeaa4a43da1c188a7de5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e4afa3d054cf40af21569d0ac89d3c9e')"
     ]
   }
 }
